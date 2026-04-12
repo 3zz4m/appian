@@ -1,0 +1,2628 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#08090d">
+<title>Appian × OpenShift — Mobile Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --nav-h: 60px;
+  --hdr-h: 48px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --spring: cubic-bezier(.34,1.56,.64,1);
+  --t: .2s var(--ease);
+}
+
+[data-theme="dark"] {
+  --bg:        #06070b;
+  --bg2:       #0b0d14;
+  --bg3:       #10131c;
+  --surface:   #0e1118;
+  --surface2:  #141720;
+  --surface3:  #1a1e2c;
+  --border:    rgba(120,140,200,.04);
+  --border2:   rgba(120,140,200,.08);
+  --border3:   rgba(120,140,200,.14);
+  --accent:    #00d4aa;
+  --accent-lt: #33e0be;
+  --accent-dk: #00a882;
+  --accent-dim:rgba(0,212,170,.06);
+  --accent-bdr:rgba(0,212,170,.18);
+  --accent-inv:#06070b;
+  --accent2:   #5b8aff;
+  --accent2-dim:rgba(91,138,255,.06);
+  --green:     #00d4aa;
+  --green-bg:  rgba(0,212,170,.04);
+  --green-bdr: rgba(0,212,170,.14);
+  --red:       #ff5c6c;
+  --red-bg:    rgba(255,92,108,.05);
+  --red-bdr:   rgba(255,92,108,.14);
+  --warn:      #ffb340;
+  --warn-bg:   rgba(255,179,64,.04);
+  --warn-bdr:  rgba(255,179,64,.14);
+  --note-bg:   rgba(91,138,255,.04);
+  --note-bdr:  rgba(91,138,255,.14);
+  --text:      #c0c8d6;
+  --text2:     #6e7a94;
+  --text3:     #3e4a62;
+  --text-inv:  #06070b;
+  --code-bg:   #080a0f;
+  --code-bdr:  #161a26;
+  --code-text: #8090b0;
+  --scrollbar: #1a1e2c;
+  --shadow:    0 2px 12px rgba(0,0,0,.5);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,.7);
+  --glow1:     rgba(0,212,170,.08);
+  --glow2:     rgba(91,138,255,.06);
+  --nav-bg:    rgba(6,7,11,.94);
+  --hdr-bg:    rgba(6,7,11,.9);
+  --drawer-bg: #08090e;
+  --icon-fill: #00d4aa;
+  --icon-fill2:#5b8aff;
+  --icon-fill3:#ffb340;
+  --icon-muted:rgba(255,255,255,.08);
+}
+
+[data-theme="light"] {
+  --bg:        #f0f2f7;
+  --bg2:       #e6e8f0;
+  --bg3:       #dde0ea;
+  --surface:   #ffffff;
+  --surface2:  #f4f5fa;
+  --surface3:  #ebecf4;
+  --border:    rgba(20,30,60,.04);
+  --border2:   rgba(20,30,60,.08);
+  --border3:   rgba(20,30,60,.14);
+  --accent:    #0a9e7e;
+  --accent-lt: #0db895;
+  --accent-dk: #087a60;
+  --accent-dim:rgba(10,158,126,.05);
+  --accent-bdr:rgba(10,158,126,.16);
+  --accent-inv:#ffffff;
+  --accent2:   #3a6ae8;
+  --accent2-dim:rgba(58,106,232,.05);
+  --green:     #0a9e7e;
+  --green-bg:  rgba(10,158,126,.04);
+  --green-bdr: rgba(10,158,126,.12);
+  --red:       #d63848;
+  --red-bg:    rgba(214,56,72,.04);
+  --red-bdr:   rgba(214,56,72,.12);
+  --warn:      #c08000;
+  --warn-bg:   rgba(192,128,0,.04);
+  --warn-bdr:  rgba(192,128,0,.12);
+  --note-bg:   rgba(58,106,232,.04);
+  --note-bdr:  rgba(58,106,232,.12);
+  --text:      #1a2040;
+  --text2:     #5a6480;
+  --text3:     #9098b0;
+  --text-inv:  #ffffff;
+  --code-bg:   #18203e;
+  --code-bdr:  #28305e;
+  --code-text: #9aa8c8;
+  --scrollbar: #c8ccd8;
+  --shadow:    0 1px 6px rgba(0,0,0,.05);
+  --shadow-lg: 0 6px 32px rgba(0,0,0,.08);
+  --glow1:     rgba(10,158,126,.04);
+  --glow2:     rgba(58,106,232,.03);
+  --nav-bg:    rgba(240,242,247,.94);
+  --hdr-bg:    rgba(240,242,247,.92);
+  --drawer-bg: #ffffff;
+  --icon-fill: #0a9e7e;
+  --icon-fill2:#3a6ae8;
+  --icon-fill3:#c08000;
+  --icon-muted:rgba(0,0,0,.04);
+}
+
+*,*::before,*::after { box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent }
+html { scroll-behavior:smooth;font-size:16px;height:100%;-webkit-text-size-adjust:100%;text-size-adjust:100% }
+body {
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100%;overflow-x:hidden;
+  padding-bottom:calc(var(--nav-h) + 8px);
+  transition:background var(--t),color var(--t);
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar { display:none }
+* { scrollbar-width:none }
+::selection { background:var(--accent-dim);color:var(--accent) }
+a { color:var(--accent);text-decoration:none }
+
+/* ═══ PROGRESS ═══ */
+.progress-rail { position:fixed;top:0;left:0;right:0;height:2px;z-index:500 }
+.progress-fill {
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .08s linear;
+}
+
+/* ═══ HEADER ═══ */
+.hdr {
+  position:fixed;top:0;left:0;right:0;height:var(--hdr-h);
+  background:var(--hdr-bg);
+  backdrop-filter:blur(28px) saturate(1.6);
+  -webkit-backdrop-filter:blur(28px) saturate(1.6);
+  border-bottom:1px solid var(--border2);
+  z-index:400;display:flex;align-items:center;padding:0 14px;gap:10px;
+}
+.hdr-brand { display:flex;align-items:center;gap:8px;flex:1;min-width:0 }
+.hdr-logo {
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;
+  letter-spacing:-.04em;color:var(--text);white-space:nowrap;
+  display:flex;align-items:center;gap:6px;
+}
+.hdr-logo .a { color:var(--accent) }
+.hdr-logo .x { color:var(--accent2);font-weight:300;opacity:.35;font-size:12px }
+.hdr-badge {
+  font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;
+  padding:2px 7px;border-radius:5px;letter-spacing:.06em;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:var(--accent-inv);flex-shrink:0;
+}
+.hdr-actions { display:flex;align-items:center;gap:6px }
+.hdr-btn {
+  width:34px;height:34px;border-radius:var(--radius);
+  background:var(--surface);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);flex-shrink:0;
+  transition:all .15s;
+}
+.hdr-btn:active { transform:scale(.92);background:var(--surface2) }
+.hdr-btn svg { width:16px;height:16px }
+
+/* ═══ FLAT ICON SYSTEM ═══ */
+.fi { display:inline-flex;align-items:center;justify-content:center;flex-shrink:0 }
+.fi svg { width:100%;height:100% }
+.fi-xs { width:14px;height:14px }
+.fi-sm { width:18px;height:18px }
+.fi-md { width:22px;height:22px }
+.fi-lg { width:28px;height:28px }
+.fi-xl { width:36px;height:36px }
+.fi-2xl { width:44px;height:44px }
+
+/* ═══ SEARCH ═══ */
+.search-overlay {
+  position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  display:flex;flex-direction:column;
+  padding:var(--hdr-h) 0 0;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.search-overlay.open { opacity:1;pointer-events:auto }
+.search-inner { background:var(--surface);border-bottom:1px solid var(--border2);padding:12px 14px }
+.search-field {
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg2);border:1.5px solid var(--border3);
+  border-radius:var(--radius);padding:10px 14px;
+}
+.search-field:focus-within { border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim) }
+.search-field input {
+  flex:1;background:none;border:none;outline:none;
+  font-family:'JetBrains Mono',monospace;font-size:14px;
+  color:var(--text);caret-color:var(--accent);
+}
+.search-field input::placeholder { color:var(--text3) }
+.search-results-list { flex:1;overflow-y:auto;background:var(--surface) }
+.sr-item {
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  cursor:pointer;display:block;transition:background .1s;
+}
+.sr-item:active { background:var(--accent-dim) }
+.sr-section {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:3px;
+}
+.sr-text { font-size:14px;color:var(--text);line-height:1.4 }
+.sr-empty { padding:32px 16px;text-align:center;color:var(--text3);font-size:14px }
+
+/* ═══ TOC DRAWER ═══ */
+.toc-backdrop {
+  position:fixed;inset:0;z-index:450;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.toc-backdrop.open { opacity:1;pointer-events:auto }
+.toc-drawer {
+  position:fixed;top:0;right:0;bottom:0;width:min(300px,82vw);
+  background:var(--drawer-bg);z-index:460;
+  display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .28s var(--ease);
+  box-shadow:-8px 0 40px rgba(0,0,0,.5);
+}
+.toc-backdrop.open .toc-drawer { transform:translateX(0) }
+.toc-hdr {
+  padding:14px;border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;gap:10px;
+  padding-top:calc(14px + env(safe-area-inset-top,0px));
+}
+.toc-title {
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.16em;color:var(--text2);flex:1;
+}
+.toc-close {
+  width:30px;height:30px;border-radius:8px;
+  background:var(--surface2);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;color:var(--text2);
+}
+.toc-close svg { width:14px;height:14px }
+.toc-body { flex:1;overflow-y:auto;padding:8px 0 80px }
+.toc-label {
+  font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--text3);padding:14px 14px 5px;
+}
+.toc-item {
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;cursor:pointer;
+  font-size:13px;font-weight:500;color:var(--text2);
+  border-left:2px solid transparent;
+  transition:color .12s,background .12s,border-color .12s;
+}
+.toc-item:active { background:var(--accent-dim) }
+.toc-item.active { color:var(--accent);background:var(--accent-dim);border-left-color:var(--accent);font-weight:600 }
+.toc-item .n {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;
+  color:var(--text3);min-width:22px;
+}
+.toc-item.active .n { color:var(--accent) }
+.toc-progress {
+  padding:12px 14px;border-top:1px solid var(--border2);background:var(--surface2);
+}
+.toc-prog-label {
+  font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);
+  text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;
+  display:flex;justify-content:space-between;
+}
+.toc-prog-label span { color:var(--accent);font-size:11px }
+.toc-prog-bar { height:3px;background:var(--bg3);border-radius:99px;overflow:hidden }
+.toc-prog-fill { height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .4s }
+
+/* ═══ HERO ═══ */
+.hero {
+  margin:calc(var(--hdr-h) + 10px) 10px 0;
+  background:var(--surface);
+  border:1px solid var(--border2);border-radius:var(--radius-lg);
+  overflow:hidden;position:relative;
+}
+.hero-inner { position:relative;z-index:1;padding:22px 18px 18px }
+.hero-eyebrow {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;
+  color:var(--text3);letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.hero-eyebrow .fi { opacity:.6 }
+.hero-h1 {
+  font-family:'Outfit',sans-serif;font-size:clamp(22px,6vw,28px);
+  font-weight:900;letter-spacing:-.04em;line-height:1.1;
+  color:var(--text);margin-bottom:10px;
+}
+.hero-h1 .grad {
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub { font-size:13px;line-height:1.65;color:var(--text2);margin-bottom:16px }
+.hero-chips { display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px }
+.chip {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;
+  padding:4px 9px;border-radius:6px;letter-spacing:.04em;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--text2);white-space:nowrap;
+  display:flex;align-items:center;gap:4px;
+}
+.chip.accent { background:var(--accent-dim);border-color:var(--accent-bdr);color:var(--accent) }
+.chip.blue { background:var(--accent2-dim);border-color:rgba(91,138,255,.18);color:var(--accent2) }
+.hero-stats {
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border2);border-radius:var(--radius);overflow:hidden;
+}
+.hs-item { background:var(--surface2);padding:10px 6px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px }
+.hs-item .fi { opacity:.7 }
+.hs-num {
+  font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;
+  color:var(--accent);line-height:1;
+}
+.hs-lbl {
+  font-family:'JetBrains Mono',monospace;font-size:7px;
+  color:var(--text3);text-transform:uppercase;letter-spacing:.06em;
+}
+
+/* ═══ CONTENT CARDS ═══ */
+.content-area { padding:0 10px 10px }
+
+.section-card {
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:var(--radius-lg);margin-top:8px;overflow:hidden;
+  scroll-margin-top:calc(var(--hdr-h) + 10px);
+}
+
+.sec-card-hdr {
+  padding:14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;-webkit-user-select:none;user-select:none;
+}
+.sec-icon-wrap {
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  background:var(--accent-dim);border:1px solid var(--accent-bdr);
+}
+.sec-icon-wrap .fi { color:var(--accent) }
+.sec-icon-wrap.blue { background:var(--accent2-dim);border-color:rgba(91,138,255,.18) }
+.sec-icon-wrap.blue .fi { color:var(--accent2) }
+.sec-icon-wrap.warn { background:var(--warn-bg);border-color:var(--warn-bdr) }
+.sec-icon-wrap.warn .fi { color:var(--warn) }
+.sec-card-title {
+  font-size:15px;font-weight:700;letter-spacing:-.02em;flex:1;min-width:0;line-height:1.25;
+}
+.sec-num {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;
+  color:var(--text3);display:block;margin-bottom:1px;
+}
+.sec-chevron { color:var(--text3);transition:transform .22s;flex-shrink:0 }
+.sec-chevron svg { width:14px;height:14px }
+.section-card.collapsed .sec-chevron { transform:rotate(-90deg) }
+.sec-card-body { padding:14px;overflow:hidden;transition:all .22s var(--ease) }
+.section-card.collapsed .sec-card-body { display:none }
+
+/* ═══ TYPOGRAPHY ═══ */
+.body-p {
+  font-size:15px;line-height:1.75;color:var(--text);margin-bottom:12px;font-weight:400;
+}
+.body-p strong { color:var(--text);font-weight:600 }
+.body-p:last-child { margin-bottom:0 }
+
+.sub-hdr {
+  font-size:14px;font-weight:700;color:var(--text);
+  margin:20px 0 10px;padding-bottom:6px;
+  border-bottom:1px solid var(--border);letter-spacing:-.01em;
+  display:flex;align-items:center;gap:6px;
+}
+.sub-hdr-num {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;
+  color:var(--accent);background:var(--accent-dim);
+  padding:2px 6px;border-radius:4px;flex-shrink:0;
+}
+
+code {
+  font-family:'JetBrains Mono',monospace;font-size:.78em;
+  padding:2px 6px;border-radius:4px;
+  background:var(--accent-dim);color:var(--accent);
+  border:1px solid var(--accent-bdr);
+}
+kbd {
+  font-family:'JetBrains Mono',monospace;font-size:.78em;
+  padding:2px 6px;border-radius:4px;
+  background:var(--surface2);color:var(--text2);
+  border:1px solid var(--border3);box-shadow:0 2px 0 var(--border3);
+}
+
+/* ═══ CODE BLOCKS ═══ */
+.code-wrap {
+  margin:12px -2px;border-radius:var(--radius);overflow:hidden;
+  border:1px solid var(--code-bdr);
+}
+.code-topbar {
+  background:var(--code-bg);border-bottom:1px solid rgba(255,255,255,.02);
+  padding:7px 12px;display:flex;align-items:center;gap:8px;
+}
+.code-dots { display:flex;gap:4px }
+.code-dot { width:7px;height:7px;border-radius:50% }
+.code-dot-r { background:#ff5c6c }
+.code-dot-y { background:#ffb340 }
+.code-dot-g { background:#00d4aa }
+.code-lang {
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:rgba(255,255,255,.16);flex:1;text-align:center;letter-spacing:.06em;
+}
+.copy-btn {
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;
+  padding:3px 10px;border-radius:4px;
+  background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.16);
+  color:var(--accent);cursor:pointer;transition:all .15s;
+}
+.copy-btn:active { transform:scale(.95) }
+.copy-btn.ok { color:var(--green);background:var(--green-bg);border-color:var(--green-bdr) }
+.code-scroll { overflow-x:auto;-webkit-overflow-scrolling:touch;-webkit-text-size-adjust:100%;text-size-adjust:100% }
+.code-scroll pre {
+  padding:14px 14px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  line-height:1.85;background:var(--code-bg);tab-size:2;
+  min-width:max-content;-webkit-text-size-adjust:100%;text-size-adjust:100%;
+}
+.code-scroll pre code {
+  display:block;white-space:pre;background:none;border:none;
+  padding:0;border-radius:0;color:var(--code-text);font-size:11px;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
+}
+.cc { color:#3d4d5f;font-style:italic }
+.ck { color:#5b8aff }
+.co { color:rgba(120,140,170,.35) }
+.cv { color:#8898b0 }
+.cp { color:#ffb340 }
+.cmd { color:#00d4aa }
+.cs { color:#50c878 }
+.cn { color:#ff5c6c }
+
+/* ═══ CALLOUTS ═══ */
+.callout {
+  display:flex;gap:10px;align-items:flex-start;
+  border-radius:var(--radius);padding:12px 14px;margin:12px 0;
+  font-size:13px;line-height:1.65;border:1px solid;
+}
+.callout .fi { flex-shrink:0;margin-top:1px }
+.callout-lbl {
+  font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;margin-right:5px;
+}
+.callout-note  { background:var(--note-bg);border-color:var(--note-bdr) }
+.callout-note  .callout-lbl { color:var(--accent2) }
+.callout-warn  { background:var(--warn-bg);border-color:var(--warn-bdr) }
+.callout-warn  .callout-lbl { color:var(--warn) }
+.callout-crit  { background:var(--red-bg);border-color:var(--red-bdr) }
+.callout-crit  .callout-lbl { color:var(--red) }
+.callout-tip   { background:var(--green-bg);border-color:var(--green-bdr) }
+.callout-tip   .callout-lbl { color:var(--green) }
+
+/* ═══ STEP BLOCKS ═══ */
+.step-block { border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;margin:12px 0 }
+.step-hdr {
+  background:var(--surface2);border-bottom:1px solid var(--border2);
+  padding:9px 12px;display:flex;align-items:center;gap:8px;
+}
+.step-pill {
+  font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent-inv);background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:4px;padding:2px 8px;
+}
+.step-title { font-size:12px;font-weight:600;color:var(--text) }
+.step-body { padding:12px;background:var(--surface) }
+
+/* ═══ TABLES ═══ */
+.tbl-wrap {
+  overflow-x:auto;margin:12px -2px;border-radius:var(--radius);
+  border:1px solid var(--border2);-webkit-overflow-scrolling:touch;
+}
+table { width:100%;border-collapse:collapse;font-size:12px }
+thead tr { background:var(--surface2) }
+thead th {
+  padding:8px 10px;text-align:left;
+  font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;
+  color:var(--text2);letter-spacing:.06em;text-transform:uppercase;
+  border-bottom:1px solid var(--border2);white-space:nowrap;
+}
+tbody tr:nth-child(even) { background:rgba(120,140,200,.02) }
+tbody td {
+  padding:8px 10px;border-bottom:1px solid var(--border);
+  vertical-align:top;line-height:1.5;
+}
+.td-bold { font-weight:600;color:var(--text) }
+.td-muted { color:var(--text2) }
+.td-accent { color:var(--accent);font-weight:600 }
+.td-ok { color:var(--green) }
+
+/* ═══ CHECKLISTS ═══ */
+.checklist { list-style:none;margin:10px 0 }
+.checklist li {
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 0;border-bottom:1px solid var(--border);
+  font-size:13px;line-height:1.55;
+}
+.checklist li:last-child { border-bottom:none }
+.chk-icon {
+  flex-shrink:0;width:20px;height:20px;border-radius:6px;
+  border:1.5px solid var(--border3);display:flex;align-items:center;
+  justify-content:center;font-size:11px;color:var(--accent);
+  margin-top:1px;cursor:pointer;transition:all .15s;
+  font-family:'JetBrains Mono',monospace;
+}
+.chk-icon:active { transform:scale(.9) }
+.chk-icon.checked { background:var(--accent);border-color:var(--accent);color:var(--accent-inv) }
+
+/* ═══ VERTICAL ARCHITECTURE DIAGRAM ═══ */
+.v-arch { margin:14px 0;display:flex;flex-direction:column;align-items:center;gap:0 }
+.v-arch-node {
+  width:100%;max-width:320px;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:var(--radius);padding:12px;
+  display:flex;align-items:center;gap:12px;
+  position:relative;
+}
+.v-arch-node.accent { border-color:var(--accent-bdr);background:var(--accent-dim) }
+.v-arch-node.blue { border-color:rgba(91,138,255,.18);background:var(--accent2-dim) }
+.v-arch-node.warn { border-color:var(--warn-bdr);background:var(--warn-bg) }
+.v-arch-node.green { border-color:var(--green-bdr);background:var(--green-bg) }
+.v-arch-icon {
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surface);border:1px solid var(--border2);flex-shrink:0;
+}
+.v-arch-node.accent .v-arch-icon { background:var(--accent-dim);border-color:var(--accent-bdr) }
+.v-arch-node.blue .v-arch-icon { background:var(--accent2-dim);border-color:rgba(91,138,255,.18) }
+.v-arch-node.warn .v-arch-icon { background:var(--warn-bg);border-color:var(--warn-bdr) }
+.v-arch-node.green .v-arch-icon { background:var(--green-bg);border-color:var(--green-bdr) }
+.v-arch-info { flex:1;min-width:0 }
+.v-arch-label {
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
+  color:var(--text);letter-spacing:-.01em;margin-bottom:2px;
+}
+.v-arch-desc { font-size:11px;color:var(--text2);line-height:1.4 }
+.v-arch-tags { display:flex;gap:4px;margin-top:4px;flex-wrap:wrap }
+.v-arch-tag {
+  font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;
+  padding:1px 5px;border-radius:3px;
+  background:var(--surface);border:1px solid var(--border2);color:var(--text3);
+}
+.v-arch-connector {
+  display:flex;flex-direction:column;align-items:center;height:24px;
+  width:2px;background:var(--border3);position:relative;
+}
+.v-arch-connector::after {
+  content:'';position:absolute;bottom:-3px;
+  width:0;height:0;border-left:4px solid transparent;
+  border-right:4px solid transparent;border-top:5px solid var(--accent);
+}
+.v-arch-pod-row {
+  width:100%;max-width:320px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+}
+.v-arch-pod {
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:8px;padding:8px 6px;text-align:center;
+}
+.v-arch-pod-icon { margin-bottom:3px }
+.v-arch-pod-name {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;
+  color:var(--accent);margin-bottom:1px;
+}
+.v-arch-pod-detail { font-size:8px;color:var(--text3) }
+.v-arch-split {
+  width:100%;max-width:320px;
+  display:grid;grid-template-columns:1fr 1fr;gap:6px;
+}
+
+/* ═══ TIMELINE ═══ */
+.timeline { margin:14px 0 }
+.tl-item { display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border) }
+.tl-item:last-child { border-bottom:none }
+.tl-dot-wrap { display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;padding-top:2px }
+.tl-dot { width:10px;height:10px;border-radius:50%;background:var(--accent);flex-shrink:0 }
+.tl-line { width:1px;flex:1;background:var(--border3);margin-top:4px }
+.tl-item:last-child .tl-line { display:none }
+.tl-content { flex:1;min-width:0 }
+.tl-title { font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px }
+.tl-desc { font-size:12px;color:var(--text2);line-height:1.5 }
+
+/* ═══ ENV BADGES ═══ */
+.env-badge {
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;
+  padding:2px 6px;border-radius:4px;margin-right:4px;letter-spacing:.04em;
+}
+.env-sa { background:rgba(0,212,170,.1);color:var(--accent);border:1px solid var(--accent-bdr) }
+.env-ha { background:rgba(91,138,255,.1);color:var(--accent2);border:1px solid rgba(91,138,255,.18) }
+.env-ag { background:rgba(255,179,64,.1);color:var(--warn);border:1px solid var(--warn-bdr) }
+
+/* ═══ QUICK REF ═══ */
+.qr-grid { display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0 }
+.qr-card {
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:var(--radius);padding:10px;
+}
+.qr-card-title {
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;
+  color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;
+  display:flex;align-items:center;gap:4px;
+}
+.qr-item { font-size:11px;color:var(--text2);margin-bottom:3px;line-height:1.4 }
+.qr-item code { font-size:10px }
+
+/* ═══ DIAGNOSTICS ═══ */
+.diag-fab {
+  position:fixed;bottom:calc(var(--nav-h) + 12px);right:14px;
+  height:34px;padding:0 12px;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:17px;cursor:pointer;z-index:300;
+  display:flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);
+  box-shadow:var(--shadow);transition:all .15s;
+}
+.diag-fab:active { transform:scale(.96) }
+.diag-panel {
+  position:fixed;bottom:calc(var(--nav-h) + 56px);right:10px;left:10px;
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:var(--radius-lg);padding:14px;z-index:300;
+  box-shadow:var(--shadow-lg);
+  transform:translateY(12px) scale(.97);opacity:0;pointer-events:none;
+  transition:transform .22s var(--spring),opacity .18s;
+}
+.diag-panel.open { transform:translateY(0) scale(1);opacity:1;pointer-events:auto }
+.diag-title {
+  font-size:13px;font-weight:700;margin-bottom:10px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.diag-close { cursor:pointer;color:var(--text3);background:none;border:none;display:flex;align-items:center }
+.diag-close svg { width:16px;height:16px }
+.diag-cmds {
+  background:var(--surface2);border-radius:8px;padding:10px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);line-height:2;
+}
+
+/* ═══ TOAST ═══ */
+.toast {
+  position:fixed;bottom:calc(var(--nav-h) + 14px);left:50%;
+  transform:translateX(-50%) translateY(8px);
+  background:var(--accent);color:var(--accent-inv);
+  padding:8px 16px;border-radius:99px;font-size:12px;
+  font-family:'JetBrains Mono',monospace;z-index:1000;
+  opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
+  box-shadow:var(--shadow-lg);
+}
+.toast.show { opacity:1;transform:translateX(-50%) translateY(0) }
+
+/* ═══ SECTION BADGE ═══ */
+.section-badge {
+  position:fixed;top:calc(var(--hdr-h) + 6px);left:50%;
+  transform:translateX(-50%) translateY(-4px);
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:99px;padding:4px 12px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);
+  z-index:300;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;
+  box-shadow:var(--shadow);white-space:nowrap;max-width:80vw;
+  overflow:hidden;text-overflow:ellipsis;
+}
+.section-badge.visible { opacity:1;transform:translateX(-50%) translateY(0) }
+
+/* ═══ BOTTOM NAV ═══ */
+.bottom-nav {
+  position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);
+  background:var(--nav-bg);
+  backdrop-filter:blur(28px) saturate(1.6);
+  -webkit-backdrop-filter:blur(28px) saturate(1.6);
+  border-top:1px solid var(--border2);
+  display:flex;align-items:center;padding:0 6px;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  z-index:400;gap:2px;
+}
+.nav-tab {
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:7px 4px;border-radius:var(--radius);cursor:pointer;
+  transition:background .15s,color .15s;color:var(--text3);
+  border:none;background:none;
+}
+.nav-tab.active { color:var(--accent) }
+.nav-tab:active { background:var(--accent-dim) }
+.nav-tab .fi { opacity:.6 }
+.nav-tab.active .fi { opacity:1 }
+.nav-tab-label { font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.04em }
+.nav-tab.active .nav-tab-label { color:var(--accent) }
+
+/* ═══ VIEWS ═══ */
+.view { display:none }
+.view.active { display:block }
+
+/* ═══ HOME GRID MODE ═══ */
+.home-grid { display:grid;grid-template-columns:1fr;gap:8px;padding:0 10px 10px }
+.section-card.grid-mode {
+  cursor:pointer;
+}
+.section-card.grid-mode .sec-card-body { display:none }
+.section-card.grid-mode .sec-chevron svg { transform:rotate(-90deg) }
+
+/* ═══ DETAIL VIEW (single section fullscreen) ═══ */
+.detail-view {
+  display:none;
+  padding:0 10px 10px;
+  margin-top:calc(var(--hdr-h) + 6px);
+}
+.detail-view.active { display:block }
+.detail-view .section-card { margin-top:0 }
+.detail-view .section-card .sec-card-body { display:block }
+.detail-view .section-card .sec-chevron { display:none }
+.detail-view .section-card .sec-card-hdr { cursor:default }
+
+/* ═══ BACK BUTTON ═══ */
+.back-btn {
+  display:none;width:34px;height:34px;border-radius:var(--radius);
+  background:var(--surface);border:1px solid var(--border2);
+  align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);flex-shrink:0;transition:all .15s;
+}
+.back-btn:active { transform:scale(.92);background:var(--surface2) }
+.back-btn svg { width:16px;height:16px }
+.back-btn.visible { display:flex }
+
+/* ═══ SECTION GRID CARDS (home launcher) ═══ */
+.sec-grid-card {
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:var(--radius-lg);padding:14px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:border-color .15s,background .15s;
+  -webkit-user-select:none;user-select:none;
+}
+.sec-grid-card:active { background:var(--accent-dim);border-color:var(--accent-bdr) }
+.sec-grid-desc {
+  font-size:11px;color:var(--text3);margin-top:2px;
+  font-family:'JetBrains Mono',monospace;
+}
+
+#view-checklist .chk-progress-wrap { padding:12px;background:var(--surface);border-bottom:1px solid var(--border2) }
+#view-sections .sections-list { padding:10px }
+.sec-jump-item {
+  display:flex;align-items:center;gap:10px;
+  padding:12px 10px;background:var(--surface);
+  border:1px solid var(--border2);border-radius:var(--radius);
+  margin-bottom:6px;cursor:pointer;transition:border-color .15s;
+}
+.sec-jump-item:active { background:var(--accent-dim);border-color:var(--accent-bdr) }
+.sec-jump-num {
+  font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  min-width:24px;
+}
+.sec-jump-title { font-size:14px;font-weight:600;flex:1 }
+.sec-jump-arrow { color:var(--text3) }
+.sec-jump-arrow svg { width:14px;height:14px }
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp {
+  from { opacity:0;transform:translateY(10px) }
+  to   { opacity:1;transform:translateY(0) }
+}
+.section-card { animation:fadeUp .3s var(--ease) both }
+.section-card:nth-child(2) { animation-delay:.03s }
+.section-card:nth-child(3) { animation-delay:.06s }
+
+@media (max-width:360px) {
+  .hero-h1 { font-size:20px }
+  .hero-stats { grid-template-columns:repeat(2,1fr) }
+  .v-arch-pod-row { grid-template-columns:repeat(2,1fr) }
+}
+@media (prefers-reduced-motion:reduce) {
+  *,.section-card { animation:none!important;transition:none!important }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ SVG ICON DEFS ═══ -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <!-- Guide/Document -->
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+  <!-- Checklist -->
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol>
+  <!-- Sections/Grid -->
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></symbol>
+  <!-- Search -->
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <!-- Sun -->
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+  <!-- Moon -->
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <!-- Menu -->
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <!-- Close -->
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <!-- Chevron Right -->
+  <symbol id="i-chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></symbol>
+  <!-- Chevron Down -->
+  <symbol id="i-chev-d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></symbol>
+  <!-- Server -->
+  <symbol id="i-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></symbol>
+  <!-- Database -->
+  <symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></symbol>
+  <!-- Shield -->
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+  <!-- Package/Box -->
+  <symbol id="i-package" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
+  <!-- Globe/Network -->
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+  <!-- Tool/Wrench -->
+  <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <!-- Heart/Health -->
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+  <!-- Download/Archive -->
+  <symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5" rx="1"/><line x1="10" y1="12" x2="14" y2="12"/></symbol>
+  <!-- Upload -->
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></symbol>
+  <!-- Layers -->
+  <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <!-- Zap -->
+  <symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <!-- Activity -->
+  <symbol id="i-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+  <!-- Refresh -->
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></symbol>
+  <!-- Terminal -->
+  <symbol id="i-terminal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></symbol>
+  <!-- Users -->
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <!-- Lock -->
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <!-- CPU -->
+  <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></symbol>
+  <!-- HardDrive -->
+  <symbol id="i-hdd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="12" x2="2" y2="12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" y1="16" x2="6.01" y2="16"/><line x1="10" y1="16" x2="10.01" y2="16"/></symbol>
+  <!-- AlertTriangle -->
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <!-- Info -->
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <!-- XOctagon (critical) -->
+  <symbol id="i-stop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></symbol>
+  <!-- CheckCircle -->
+  <symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <!-- Clipboard -->
+  <symbol id="i-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></symbol>
+  <!-- Settings -->
+  <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+</defs>
+</svg>
+
+<!-- ═══ PROGRESS ═══ -->
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-logo"><span class="a">Appian</span><span class="x">×</span>OpenShift</div>
+    <span class="hdr-badge">v26.2</span>
+  </div>
+  <div class="hdr-actions">
+    <button class="back-btn" id="backBtn" aria-label="Back to home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="hdr-btn" id="searchBtn" aria-label="Search"><svg><use href="#i-search"/></svg></button>
+    <button class="hdr-btn" id="themeBtn" aria-label="Toggle theme"><svg><use href="#i-moon"/></svg></button>
+    <button class="hdr-btn" id="tocBtn" aria-label="TOC"><svg><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+
+<!-- ═══ SEARCH ═══ -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-inner">
+    <div class="search-field">
+      <span class="fi fi-sm" style="color:var(--text3)"><svg><use href="#i-search"/></svg></span>
+      <input type="text" id="searchInput" placeholder="Search guide…" autocomplete="off" spellcheck="false">
+      <button onclick="closeSearch()" style="background:none;border:none;cursor:pointer;color:var(--text3);display:flex"><svg width="16" height="16"><use href="#i-x"/></svg></button>
+    </div>
+  </div>
+  <div class="search-results-list" id="searchResultsList"><div class="sr-empty">Start typing to search…</div></div>
+</div>
+
+<!-- ═══ TOC DRAWER ═══ -->
+<div class="toc-backdrop" id="tocBackdrop">
+  <div class="toc-drawer">
+    <div class="toc-hdr">
+      <span class="toc-title">Navigation</span>
+      <button class="toc-close" id="tocClose"><svg><use href="#i-x"/></svg></button>
+    </div>
+    <div class="toc-body" id="tocBody">
+      <div class="toc-label">Deployment Pipeline</div>
+      <div class="toc-item" data-target="sec00"><span class="n">00</span><span>Executive Summary</span></div>
+      <div class="toc-item" data-target="sec01"><span class="n">01</span><span>Core Concepts</span></div>
+      <div class="toc-item" data-target="sec02"><span class="n">02</span><span>Prerequisites</span></div>
+      <div class="toc-item" data-target="sec03"><span class="n">03</span><span>Air-Gap / Registry</span></div>
+      <div class="toc-item" data-target="sec04"><span class="n">04</span><span>Operator Install</span></div>
+      <div class="toc-item" data-target="sec05"><span class="n">05</span><span>Staging (SA)</span></div>
+      <div class="toc-item" data-target="sec06"><span class="n">06</span><span>Production (HA)</span></div>
+      <div class="toc-item" data-target="sec07"><span class="n">07</span><span>Network / Ingress</span></div>
+      <div class="toc-item" data-target="sec08"><span class="n">08</span><span>Database Config</span></div>
+      <div class="toc-item" data-target="sec09"><span class="n">09</span><span>Troubleshooting</span></div>
+      <div class="toc-item" data-target="sec10"><span class="n">10</span><span>Health Checks</span></div>
+      <div class="toc-item" data-target="sec11"><span class="n">11</span><span>Disaster Recovery</span></div>
+      <div class="toc-item" data-target="sec12"><span class="n">12</span><span>Upgrades</span></div>
+      <div class="toc-item" data-target="sec13"><span class="n">13</span><span>Quick Reference</span></div>
+    </div>
+    <div class="toc-progress">
+      <div class="toc-prog-label">Progress <span id="tocPct">0%</span></div>
+      <div class="toc-prog-bar"><div class="toc-prog-fill" id="tocProgFill"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-badge" id="sectionBadge"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ═══ DIAGNOSTICS ═══ -->
+<button class="diag-fab" id="diagFab"><span class="fi fi-sm"><svg><use href="#i-terminal"/></svg></span> Quick Check</button>
+<div class="diag-panel" id="diagPanel">
+  <div class="diag-title">
+    <span style="display:flex;align-items:center;gap:6px"><span class="fi fi-sm" style="color:var(--accent)"><svg><use href="#i-terminal"/></svg></span> Setup Quick Check</span>
+    <button class="diag-close" onclick="closeDiag()"><svg><use href="#i-x"/></svg></button>
+  </div>
+  <div class="diag-cmds">
+    <div>oc get crd | grep appian</div>
+    <div>oc get pods -n appian-operator</div>
+    <div>oc get scc | grep appian</div>
+    <div>oc get pvc -n appian-prod</div>
+    <div>oc get appians -n appian-prod</div>
+    <div>curl -sk https://&lt;URL&gt;/suite/health</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ VIEWS ═══════════════════ -->
+
+<!-- VIEW: HOME -->
+<div class="view active" id="view-home">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow"><span class="fi fi-xs" style="color:var(--accent)"><svg><use href="#i-layers"/></svg></span> The Mobile Guide · Appian on Kubernetes</div>
+      <h1 class="hero-h1">Appian 26.2 on <span class="grad">OpenShift</span><br>Setup Guide</h1>
+      <p class="hero-sub">From zero to production — bare-metal, air-gapped, SA and HA configs.</p>
+      <div class="hero-chips">
+        <span class="chip blue"><span class="fi fi-xs"><svg><use href="#i-server"/></svg></span>SA + HA</span>
+        <span class="chip"><span class="fi fi-xs"><svg><use href="#i-shield"/></svg></span>Air-Gapped</span>
+        <span class="chip"><span class="fi fi-xs"><svg><use href="#i-globe"/></svg></span>Bare-Metal</span>
+      </div>
+      <div class="hero-stats">
+        <div class="hs-item"><span class="fi fi-sm" style="color:var(--accent)"><svg><use href="#i-layers"/></svg></span><div class="hs-lbl" style="font-size:10px;margin-bottom:2px">OpenShift</div><div class="hs-num" style="font-size:12px">4.19+</div></div>
+        <div class="hs-item"><span class="fi fi-sm" style="color:var(--accent2)"><svg><use href="#i-package"/></svg></span><div class="hs-lbl" style="font-size:10px;margin-bottom:2px">Appian</div><div class="hs-num" style="font-size:12px">26.2+</div></div>
+        <div class="hs-item"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-db"/></svg></span><div class="hs-lbl" style="font-size:10px;margin-bottom:2px">SQL Server</div><div class="hs-num" style="font-size:12px">2022</div></div>
+        <div class="hs-item"><span class="fi fi-sm" style="color:var(--green)"><svg><use href="#i-activity"/></svg></span><div class="hs-lbl" style="font-size:10px;margin-bottom:2px">Health</div><div class="hs-num" style="font-size:12px">24/7</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-area" id="contentArea">
+
+    <!-- HOME GRID: Section Launcher Cards -->
+    <div class="home-grid" id="homeGrid">
+      <div class="sec-grid-card" onclick="openSection('sec00')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-clipboard"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">00</span><div class="sec-card-title">Executive Summary</div><div class="sec-grid-desc">Decision matrix · env profiles</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec01')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-cpu"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">01</span><div class="sec-card-title">Core Concepts</div><div class="sec-grid-desc">Architecture · SA vs HA · K8s concepts</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec02')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-check"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">02</span><div class="sec-card-title">Prerequisites</div><div class="sec-grid-desc">Checklists · secrets · preflight</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec03')">
+        <div class="sec-icon-wrap warn"><span class="fi fi-md"><svg><use href="#i-lock"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">03</span><div class="sec-card-title">Air-Gap / Registry</div><div class="sec-grid-desc">Mirror · digest · CoreDNS · bundle</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec04')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-package"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">04</span><div class="sec-card-title">Operator Install</div><div class="sec-grid-desc">Helm · certs · webhooks · verify</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec05')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-server"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">05</span><div class="sec-card-title">Staging (SA)</div><div class="sec-grid-desc">Namespace · PVC · CR · validation</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec06')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-shield"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">06</span><div class="sec-card-title">Production (HA)</div><div class="sec-grid-desc">SCC · NetworkPolicy · PDB · go-live</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec07')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-globe"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">07</span><div class="sec-card-title">Network &amp; Ingress</div><div class="sec-grid-desc">Route · NGINX · F5 · cert-manager</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec08')">
+        <div class="sec-icon-wrap warn"><span class="fi fi-md"><svg><use href="#i-db"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">08</span><div class="sec-card-title">Database Config</div><div class="sec-grid-desc">SQL · JDBC · LDAP · smoke tests</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec09')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-wrench"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">09</span><div class="sec-card-title">Troubleshooting</div><div class="sec-grid-desc">Diagnostics · logs · ZK · air-gap</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec10')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-activity"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">10</span><div class="sec-card-title">Health &amp; Monitoring</div><div class="sec-grid-desc">Daily checks · Prometheus · alerts</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec11')">
+        <div class="sec-icon-wrap warn"><span class="fi fi-md"><svg><use href="#i-archive"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">11</span><div class="sec-card-title">Disaster Recovery</div><div class="sec-grid-desc">3 backup planes · Velero · restore</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec12')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-refresh"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">12</span><div class="sec-card-title">Upgrades</div><div class="sec-grid-desc">Gate script · rollback · OCP coord</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+      <div class="sec-grid-card" onclick="openSection('sec13')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-terminal"/></svg></span></div>
+        <div style="flex:1"><span class="sec-num">13</span><div class="sec-card-title">Quick Reference</div><div class="sec-grid-desc">Sizing · anti-patterns · escalation</div></div>
+        <span style="color:var(--text3)"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>
+      </div>
+    </div>
+
+    <!-- DETAIL VIEW: Shows one section at a time -->
+    <div class="detail-view" id="detailView">
+      <div id="detailContent"></div>
+    </div>
+
+    <!-- ALL SECTION CARDS (hidden, cloned into detail view on demand) -->
+    <div id="allSections" style="display:none">
+    <!-- SEC 00 -->
+    <div class="section-card" id="sec00">
+      <div class="sec-card-hdr" onclick="toggleSection('sec00')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-clipboard"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 00</span><span class="sec-card-title">Executive Summary &amp; Decision Matrix</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <p class="body-p">This guide covers the complete deployment lifecycle for Appian 26.2 on Red Hat OpenShift 4.x — from first concepts to production HA, disaster recovery, and upgrades.</p>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">0.1</span>Deployment Decision Matrix</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Environment</th><th>Compute</th><th>Storage</th><th>Use Case</th><th>RTO/RPO</th><th>Risk</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">CRC / Dev</td><td>4 vCPU / 16 Gi</td><td>RWO hostpath</td><td>Local dev</td><td>N/A</td><td style="color:var(--warn)">High</td></tr>
+            <tr><td class="td-bold">SA Staging</td><td>12 vCPU / 24 Gi</td><td>RWO SSD</td><td>QA</td><td>4 hr</td><td style="color:var(--warn)">Med</td></tr>
+            <tr><td class="td-bold">HA Prod</td><td>63 vCPU / 126 Gi</td><td>RWX+RWO</td><td>Production</td><td>30 min</td><td class="td-ok">Low</td></tr>
+            <tr><td class="td-bold">HA Air-Gap</td><td>63 vCPU / 126 Gi</td><td>RWX+RWO</td><td>Gov / classified</td><td>30 min</td><td class="td-ok">Low</td></tr>
+          </tbody>
+        </table></div>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">0.2</span>Reading This Guide</h3>
+        <p class="body-p">Sections are ordered as a deployment pipeline — follow them sequentially for first-time installations. Each code block includes a <strong>copy</strong> button. Checklists persist in your browser.</p>
+        <div class="callout callout-note"><span class="fi fi-sm" style="color:var(--accent2)"><svg><use href="#i-info"/></svg></span><div><span class="callout-lbl">ENV BADGES</span>Look for <strong>[SA]</strong> <strong>[HA]</strong> <strong>[AIR-GAP]</strong> tags on steps. Steps without tags apply to all environments.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 01 -->
+    <div class="section-card" id="sec01">
+      <div class="sec-card-hdr" onclick="toggleSection('sec01')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-cpu"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 01</span><span class="sec-card-title">Core Concepts — Appian on OpenShift</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <p class="body-p">Before touching a single command, make sure you have these concepts solid. Every production problem traces back to one of them.</p>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">1.1</span>What is Appian &amp; Why OpenShift?</h3>
+        <p class="body-p">Appian is an enterprise low-code platform for process automation and AI-powered workflows. Since version 25.4, Appian runs exclusively as a containerised workload on Kubernetes. OpenShift is the enterprise-grade, security-hardened Kubernetes distribution used in production.</p>
+        <p class="body-p">All Appian microservices run as containerized pods managed by the <strong>Appian Operator</strong> — a Kubernetes-native controller with automated lifecycle management.</p>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">1.2</span>Architecture (Vertical View)</h3>
+        <!-- VERTICAL ARCHITECTURE DIAGRAM -->
+        <div class="v-arch">
+          <div class="v-arch-node accent">
+            <div class="v-arch-icon"><span class="fi fi-md" style="color:var(--accent)"><svg><use href="#i-users"/></svg></span></div>
+            <div class="v-arch-info">
+              <div class="v-arch-label">Users / Browser</div>
+              <div class="v-arch-desc">End users accessing Appian UI</div>
+            </div>
+          </div>
+          <div class="v-arch-connector"></div>
+          <div class="v-arch-node blue">
+            <div class="v-arch-icon"><span class="fi fi-md" style="color:var(--accent2)"><svg><use href="#i-globe"/></svg></span></div>
+            <div class="v-arch-info">
+              <div class="v-arch-label">Ingress Layer</div>
+              <div class="v-arch-desc">F5 / NGINX → Route → TLS Reencrypt</div>
+              <div class="v-arch-tags"><span class="v-arch-tag">F5</span><span class="v-arch-tag">NGINX</span><span class="v-arch-tag">TLS</span></div>
+            </div>
+          </div>
+          <div class="v-arch-connector"></div>
+          <div class="v-arch-node" style="border-color:rgba(91,138,255,.12);border-style:dashed">
+            <div class="v-arch-icon"><span class="fi fi-md" style="color:var(--accent2)"><svg><use href="#i-settings"/></svg></span></div>
+            <div class="v-arch-info">
+              <div class="v-arch-label">Appian Operator</div>
+              <div class="v-arch-desc">CRD Controller · Webhooks · HPA · PDB</div>
+              <div class="v-arch-tags"><span class="v-arch-tag">CRD</span><span class="v-arch-tag">HPA</span><span class="v-arch-tag">PDB</span></div>
+            </div>
+          </div>
+          <div class="v-arch-connector"></div>
+          <div class="v-arch-node green">
+            <div class="v-arch-icon"><span class="fi fi-md" style="color:var(--green)"><svg><use href="#i-package"/></svg></span></div>
+            <div class="v-arch-info">
+              <div class="v-arch-label" style="color:var(--green)">Application Pods</div>
+              <div class="v-arch-desc">Core Appian services</div>
+            </div>
+          </div>
+          <div style="width:100%;max-width:320px;padding:4px 0">
+            <div class="v-arch-pod-row">
+              <div class="v-arch-pod"><div class="v-arch-pod-icon"><span class="fi fi-sm" style="color:var(--accent)"><svg><use href="#i-globe"/></svg></span></div><div class="v-arch-pod-name">httpd</div><div class="v-arch-pod-detail">Apache · ×3</div></div>
+              <div class="v-arch-pod"><div class="v-arch-pod-icon"><span class="fi fi-sm" style="color:var(--accent)"><svg><use href="#i-server"/></svg></span></div><div class="v-arch-pod-name">Webapp</div><div class="v-arch-pod-detail">Tomcat · ×3</div></div>
+              <div class="v-arch-pod"><div class="v-arch-pod-icon"><span class="fi fi-sm" style="color:var(--accent)"><svg><use href="#i-zap"/></svg></span></div><div class="v-arch-pod-name">Engine</div><div class="v-arch-pod-detail">Process · ×3</div></div>
+            </div>
+            <div class="v-arch-pod-row" style="margin-top:6px">
+              <div class="v-arch-pod"><div class="v-arch-pod-icon"><span class="fi fi-sm" style="color:var(--accent2)"><svg><use href="#i-search"/></svg></span></div><div class="v-arch-pod-name">Data Svc</div><div class="v-arch-pod-detail">Search · ×1</div></div>
+              <div class="v-arch-pod"><div class="v-arch-pod-icon"><span class="fi fi-sm" style="color:var(--accent2)"><svg><use href="#i-activity"/></svg></span></div><div class="v-arch-pod-name">Kafka</div><div class="v-arch-pod-detail">Messaging · ×3</div></div>
+              <div class="v-arch-pod"><div class="v-arch-pod-icon"><span class="fi fi-sm" style="color:var(--accent2)"><svg><use href="#i-layers"/></svg></span></div><div class="v-arch-pod-name">ZK</div><div class="v-arch-pod-detail">Zookeeper · ×3</div></div>
+            </div>
+          </div>
+          <div class="v-arch-connector"></div>
+          <div class="v-arch-split">
+            <div class="v-arch-node warn" style="max-width:none">
+              <div class="v-arch-icon"><span class="fi fi-md" style="color:var(--warn)"><svg><use href="#i-db"/></svg></span></div>
+              <div class="v-arch-info"><div class="v-arch-label" style="color:var(--warn)">Ext. DB</div><div class="v-arch-desc">SQL Server / PG</div></div>
+            </div>
+            <div class="v-arch-node blue" style="max-width:none">
+              <div class="v-arch-icon"><span class="fi fi-md" style="color:var(--accent2)"><svg><use href="#i-hdd"/></svg></span></div>
+              <div class="v-arch-info"><div class="v-arch-label" style="color:var(--accent2)">Storage</div><div class="v-arch-desc">ODF / CephFS</div></div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">1.3</span>OpenShift Concepts You Must Know</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Concept</th><th>Why It Matters</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Namespace</td><td>Logical isolation. Min 2: <code>appian-operator</code> + <code>appian-prod</code></td></tr>
+            <tr><td class="td-bold">PVC / PV</td><td>Storage request. Appian stores docs, indices, engine state on PVCs</td></tr>
+            <tr><td class="td-bold">Secret</td><td>Encrypted key-value for passwords, tokens, licences</td></tr>
+            <tr><td class="td-bold">CR</td><td><code>appian.yaml</code> tells the Operator version, replicas, storage</td></tr>
+            <tr><td class="td-bold">SCC</td><td>Security Context Constraint. Appian needs <code>anyuid</code> for UID 10006</td></tr>
+            <tr><td class="td-bold">RWO vs RWX</td><td>RWO = one pod writes (SA). RWX = multi-pod — <strong>mandatory for HA</strong></td></tr>
+            <tr><td class="td-bold">Helm</td><td>Package manager. Used to install the Appian Operator</td></tr>
+            <tr><td class="td-bold">Route</td><td>Exposes services externally. OpenShift-native ingress</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">1.4</span>SA vs HA — Which to Deploy?</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Attribute</th><th>SA</th><th>HA</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Replicas</td><td>1 each</td><td>3 each (min 2)</td></tr>
+            <tr><td class="td-bold">Storage</td><td>RWO ok</td><td style="color:var(--red)">RWX mandatory</td></tr>
+            <tr><td class="td-bold">Compute</td><td>~12 vCPU / 24 Gi</td><td>~63 vCPU / 126 Gi</td></tr>
+            <tr><td class="td-bold">Session</td><td>Not required</td><td>Cookie (JSESSIONID)</td></tr>
+            <tr><td class="td-bold">Downtime</td><td>Acceptable</td><td style="color:var(--red)">Zero</td></tr>
+            <tr><td class="td-bold">Use case</td><td>Staging / dev</td><td class="td-ok">All production</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-tip"><span class="fi fi-sm" style="color:var(--green)"><svg><use href="#i-check-circle"/></svg></span><div><span class="callout-lbl">TIP</span>Always deploy SA first. Validate fully. Then deploy HA with a separate namespace.</div></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">SECURITY</span><strong>Never use <code>anyuid</code> SCC in production.</strong> Use a custom SCC restricted to UID 10006. See Section 6.3.</div></div>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">VERSION</span>This guide targets Appian 26.2 on OCP 4.14+. CRD names, chart values, image tags can change between releases. Validate against release-specific docs.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 02 -->
+    <div class="section-card" id="sec02">
+      <div class="sec-card-hdr" onclick="toggleSection('sec02')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-check"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 02</span><span class="sec-card-title">Prerequisites</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <p class="body-p">Missing a prerequisite will silently block you hours into deployment. Verify every item before running a single command.</p>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">2.1</span>Infrastructure Checklist</h3>
+        <ul class="checklist" data-category="Infrastructure">
+          <li><span class="chk-icon">☐</span>Red Hat OpenShift 4.14+ cluster operational (bare-metal IPI/UPI or CRC for dev)</li>
+          <li><span class="chk-icon">☐</span>Minimum 3 worker nodes (HA) or 1 node (SA/CRC) with 16+ vCPU and 64+ GB RAM each</li>
+          <li><span class="chk-icon">☐</span>MetalLB or equivalent load balancer configured (bare-metal)</li>
+          <li><span class="chk-icon">☐</span>cert-manager operator installed and running</li>
+          <li><span class="chk-icon">☐</span>ODF (OpenShift Data Foundation) installed for CephFS/RBD storage (HA only)</li>
+          <li><span class="chk-icon">☐</span>DNS configured for Appian URL and OpenShift routes</li>
+          <li><span class="chk-icon">☐</span>TLS certificates provisioned (enterprise CA or self-signed for dev)</li>
+        </ul>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">2.2</span>Accounts &amp; Downloads</h3>
+        <ul class="checklist" data-category="Accounts">
+          <li><span class="chk-icon">☐</span>Red Hat account at <code>console.redhat.com</code></li>
+          <li><span class="chk-icon">☐</span>MyAppian account with active subscription</li>
+          <li><span class="chk-icon">☐</span>AoK licence files requested (temporary 6-day + long-term)</li>
+          <li><span class="chk-icon">☐</span>Appian Operator Helm chart downloaded (.tgz)</li>
+          <li><span class="chk-icon">☐</span>Appian container images available (operator, webapp, data-server, search-server, service-manager, kafka, zookeeper, httpd)</li>
+          <li><span class="chk-icon">☐</span><code>appian.yaml</code> CR template downloaded from Appian docs</li>
+        </ul>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">2.3</span>External Database</h3>
+        <ul class="checklist" data-category="Database">
+          <li><span class="chk-icon">☐</span>SQL Server 2022 (or MariaDB/MySQL/PostgreSQL) installed and running</li>
+          <li><span class="chk-icon">☐</span>Appian database created with collation <code>SQL_Latin1_General_CP1_CI_AS</code></li>
+          <li><span class="chk-icon">☐</span><code>READ_COMMITTED_SNAPSHOT ON</code> set on database</li>
+          <li><span class="chk-icon">☐</span>DB user with <code>db_owner</code> for initial schema creation</li>
+          <li><span class="chk-icon">☐</span>Database is network-reachable from pod CIDR on port 1433</li>
+          <li><span class="chk-icon">☐</span>JDBC connection URL confirmed working</li>
+        </ul>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>Licence files are site-specific. k3.lic and k4.lic must match the site name and URL in your CR. A mismatch prevents the site from starting.</div></div>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">2.4</span>Tools</h3>
+        <ul class="checklist">
+          <li><span class="chk-icon">☐</span><code>oc</code> CLI installed and logged in to cluster</li>
+          <li><span class="chk-icon">☐</span>Helm 3 installed</li>
+          <li><span class="chk-icon">☐</span>Podman or Docker available for image management</li>
+          <li><span class="chk-icon">☐</span><code>skopeo</code> installed (air-gapped environments)</li>
+        </ul>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">2.5</span>Secret Management Strategies</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Strategy</th><th>Security</th><th>Best For</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">K8s Secret (file)</td><td style="color:var(--warn)">Medium</td><td>Dev, Staging</td></tr>
+            <tr><td class="td-bold">Sealed Secrets</td><td class="td-ok">High</td><td>GitOps pipelines</td></tr>
+            <tr><td class="td-bold">HashiCorp Vault + CSI</td><td class="td-ok">Highest</td><td>Production</td></tr>
+            <tr><td class="td-bold">Red Hat Vault / KSOPS</td><td class="td-ok">High</td><td>OpenShift-native</td></tr>
+          </tbody>
+        </table></div>
+        <h3 class="sub-hdr"><span class="sub-hdr-num">2.6</span>Preflight Validation Script</h3>
+        <p class="body-p">Run this script before starting any deployment. All checks must pass:</p>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · appian-preflight.sh</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc">#!/bin/bash</span>
+<span class="cc"># Appian on OpenShift — Pre-Deployment Health Check</span>
+<span class="cmd">echo "=== APPIAN OPENSHIFT PREFLIGHT ==="</span>
+<span class="cc"># 1. Cluster connectivity</span>
+<span class="cmd">oc whoami &gt;/dev/null 2&gt;&amp;1 || { echo "❌ Not logged in"; exit 1; }</span>
+<span class="cmd">echo "✅ Cluster: $(oc whoami --show-server)"</span>
+<span class="cc"># 2. Storage classes</span>
+<span class="cmd">oc get storageclass --no-headers | grep -q . || { echo "❌ No StorageClass"; exit 1; }</span>
+<span class="cmd">echo "✅ StorageClasses: $(oc get sc --no-headers | wc -l) available"</span>
+<span class="cc"># 3. cert-manager</span>
+<span class="cmd">oc get pods -n cert-manager --no-headers 2&gt;/dev/null | grep -q Running || { echo "❌ cert-manager not running"; exit 1; }</span>
+<span class="cmd">echo "✅ cert-manager: Running"</span>
+<span class="cc"># 4. Database reachable</span>
+<span class="cmd">SQL_HOST=${SQL_HOST:-"sql-server.example.com"}</span>
+<span class="cmd">SQL_PORT=${SQL_PORT:-1433}</span>
+<span class="cmd">nc -zv $SQL_HOST $SQL_PORT 2&gt;&amp;1 | grep -q succeeded || { echo "❌ DB unreachable"; exit 1; }</span>
+<span class="cmd">echo "✅ Database: $SQL_HOST:$SQL_PORT reachable"</span>
+<span class="cc"># 5. DNS resolution</span>
+<span class="cmd">APPIAN_URL=${APPIAN_URL:-"appian.yourcompany.com"}</span>
+<span class="cmd">dig +short $APPIAN_URL | grep -q . || { echo "❌ DNS failure for $APPIAN_URL"; exit 1; }</span>
+<span class="cmd">echo "✅ DNS: $APPIAN_URL resolves"</span>
+<span class="cc"># 6. Helm available</span>
+<span class="cmd">helm version --short &gt;/dev/null 2&gt;&amp;1 || { echo "❌ Helm not installed"; exit 1; }</span>
+<span class="cmd">echo "✅ Helm: $(helm version --short)"</span>
+<span class="cmd">echo "✅ ALL PREFLIGHT CHECKS PASSED"</span></code></pre></div></div>
+      </div>
+    </div>
+
+    <!-- SEC 03 -->
+    <div class="section-card" id="sec03">
+      <div class="sec-card-hdr" onclick="toggleSection('sec03')">
+        <div class="sec-icon-wrap warn"><span class="fi fi-md"><svg><use href="#i-lock"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 03</span><span class="sec-card-title">Air-Gap / Registry Mirror</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">AIR-GAP ONLY</span>Skip this section if your cluster has internet access.</div></div>
+        <p class="body-p">Air-gapped environments require all images to be pre-loaded into an internal registry.</p>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">3.1</span>Mirror Images</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · mirror-images.sh</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc">#!/bin/bash</span>
+<span class="cv">REGISTRY</span><span class="co">=</span><span class="cs">"registry.internal.corp:5000"</span>
+<span class="cv">APPIAN_TAG</span><span class="co">=</span><span class="cs">"26.2.0"</span>
+<span class="cv">SOURCE</span><span class="co">=</span><span class="cs">"registry.appian.com/appian"</span>
+
+<span class="ck">for</span> img <span class="ck">in</span> operator webapp data-server search-server service-manager kafka zookeeper httpd; <span class="ck">do</span>
+  <span class="cmd">skopeo copy \</span>
+    <span class="cmd">docker://${SOURCE}/${img}:${APPIAN_TAG} \</span>
+    <span class="cmd">docker://${REGISTRY}/appian/${img}:${APPIAN_TAG} \</span>
+    <span class="cmd">--authfile /root/pull-secret.json</span>
+<span class="ck">done</span>
+<span class="cmd">echo "✅ All images mirrored"</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">3.2</span>ImageContentSourcePolicy</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · icsp.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> operator.openshift.io/v1alpha1
+<span class="ck">kind</span><span class="co">:</span> ImageContentSourcePolicy
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-mirror
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">repositoryDigestMirrors</span><span class="co">:</span>
+  <span class="co">- </span><span class="ck">mirrors</span><span class="co">:</span>
+    <span class="co">- </span>registry.internal.corp:5000/appian
+    <span class="ck">source</span><span class="co">:</span> registry.appian.com/appian</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">3.3</span>Image Digest Verification</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · verify-images.sh</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc">#!/bin/bash</span>
+<span class="cp">REGISTRY="registry.yourcompany.com:5000"</span>
+<span class="cp">TAG="26.2.0.0"</span>
+<span class="cmd">for img in operator webapp data-server search-server service-manager kafka zookeeper httpd; do</span>
+<span class="cmd">  DIGEST=$(podman inspect ${REGISTRY}/appian/${img}:${TAG} --format '{{.Digest}}' 2&gt;/dev/null)</span>
+<span class="cmd">  if [ -z "$DIGEST" ]; then</span>
+<span class="cmd">    echo "❌ MISSING: appian/${img}:${TAG}"</span>
+<span class="cmd">  else</span>
+<span class="cmd">    echo "✅ appian/${img}:${TAG} → ${DIGEST:0:20}…"</span>
+<span class="cmd">  fi</span>
+<span class="cmd">done</span></code></pre></div></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>Compare each digest against values published in Appian release notes. A mismatched digest means a corrupted or tampered image.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">3.4</span>Pin Images by Digest in CR</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · digest-pinned CR</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">webapp</span><span class="co">:</span>
+    <span class="ck">image</span><span class="co">:</span>
+      <span class="ck">repository</span><span class="co">:</span> <span class="cp">registry.yourcompany.com:5000/appian/webapp</span>
+      <span class="ck">tag</span><span class="co">:</span> <span class="cv">26.2.0.0</span>
+      <span class="ck">digest</span><span class="co">:</span> <span class="cs">sha256:abc123def456…</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">3.5</span>Air-Gap imagePullPolicy</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · imagePullPolicy</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">imagePullPolicy</span><span class="co">:</span> <span class="cv">IfNotPresent</span>    <span class="cc"># Air-gap mandatory</span>
+  <span class="ck">webapp</span><span class="co">:</span>
+    <span class="ck">image</span><span class="co">:</span>
+      <span class="ck">repository</span><span class="co">:</span> <span class="cp">registry.yourcompany.com:5000/appian/webapp</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">3.6</span>CoreDNS for Internal Registry</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · dns-custom.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> operator.openshift.io/v1
+<span class="ck">kind</span><span class="co">:</span> DNS
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> default
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">servers</span><span class="co">:</span>
+  <span class="cv">- name: internal-registry</span>
+    <span class="ck">zones</span><span class="co">:</span>
+    <span class="cv">- registry.yourcompany.com</span>
+    <span class="ck">forwardPlugin</span><span class="co">:</span>
+      <span class="ck">upstreams</span><span class="co">:</span>
+      <span class="cv">- </span><span class="cp">&lt;INTERNAL_DNS_IP&gt;</span></code></pre></div></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">AIR-GAP CRITICAL</span>Without DNS config, every <code>ImagePullBackOff</code> shows "no such host". Configure DNS <strong>before</strong> pushing images.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">3.7</span>Offline Bundle Generator</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · generate-offline-bundle.sh</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc">#!/bin/bash</span>
+<span class="cp">BUNDLE="appian-offline-$(date +%Y%m%d)"</span>
+<span class="cmd">mkdir -p ${BUNDLE}/{images,manifests,scripts}</span>
+<span class="cmd">podman save -m -o ${BUNDLE}/images/appian-images.tar \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-operator:&lt;ver&gt; \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-webapp:&lt;ver&gt; \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-data-server:&lt;ver&gt; \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-search-server:&lt;ver&gt; \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-service-manager:&lt;ver&gt; \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-kafka:&lt;ver&gt; \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-zookeeper:&lt;ver&gt; \</span>
+  <span class="cmd">${APPIAN_REGISTRY}/appian-httpd:&lt;ver&gt;</span>
+<span class="cmd">cp appian-operator-*.tgz ${BUNDLE}/manifests/</span>
+<span class="cmd">tar czf ${BUNDLE}.tar.gz ${BUNDLE}/</span>
+<span class="cmd">echo "✅ Bundle: ${BUNDLE}.tar.gz ($(du -h ${BUNDLE}.tar.gz | cut -f1))"</span></code></pre></div></div>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">CAUTION</span>Applying ICSP triggers a rolling reboot of all nodes. Do this during a maintenance window.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 04 -->
+    <div class="section-card" id="sec04">
+      <div class="sec-card-hdr" onclick="toggleSection('sec04')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-package"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 04</span><span class="sec-card-title">Operator Installation</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <p class="body-p">The Appian Operator manages the full lifecycle. Install once per cluster.</p>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">4.1</span>Namespace &amp; Certificates</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc create namespace appian-operator</span>
+
+<span class="cc"># Create self-signed issuer for webhook TLS</span>
+<span class="cmd">cat &lt;&lt;EOF | oc apply -f -</span>
+<span class="ck">apiVersion:</span> cert-manager.io/v1
+<span class="ck">kind:</span> Issuer
+<span class="ck">metadata:</span>
+  <span class="ck">name:</span> appian-operator-selfsigned-issuer
+  <span class="ck">namespace:</span> appian-operator
+<span class="ck">spec:</span>
+  <span class="ck">selfSigned:</span> {}
+EOF
+
+<span class="cc"># Create webhook certificate</span>
+<span class="cmd">cat &lt;&lt;EOF | oc apply -f -</span>
+<span class="ck">apiVersion:</span> cert-manager.io/v1
+<span class="ck">kind:</span> Certificate
+<span class="ck">metadata:</span>
+  <span class="ck">name:</span> appian-operator-webhooks-certificate
+  <span class="ck">namespace:</span> appian-operator
+<span class="ck">spec:</span>
+  <span class="ck">secretName:</span> appian-operator-webhooks
+  <span class="ck">issuerRef:</span>
+    <span class="ck">name:</span> appian-operator-selfsigned-issuer
+  <span class="ck">dnsNames:</span>
+  - appian-operator-webhooks.appian-operator.svc
+  - appian-operator-webhooks.appian-operator.svc.cluster.local
+EOF
+
+<span class="cmd">oc get certificate -n appian-operator</span>
+<span class="cc"># READY should show True</span>
+
+<span class="cmd">oc create secret docker-registry appian-pull-secret \</span>
+  <span class="cmd">-n appian-operator \</span>
+  <span class="cmd">--docker-server=registry.yourcompany.com:5000 \</span>
+  <span class="cmd">--docker-username=admin \</span>
+  <span class="cmd">--docker-password="$(cat /path/to/registry-password.txt)"</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">4.2</span>Install via Helm</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">helm install appian-operator \</span>
+  <span class="cmd">./appian-operator-&lt;version&gt;.tgz \</span>
+  <span class="cmd">--namespace appian-operator \</span>
+  <span class="cmd">--set webhooks.secretName=appian-operator-webhooks \</span>
+  <span class="cmd">--set webhooks.certManager.certificateName=appian-operator-webhooks-certificate \</span>
+  <span class="cmd">--set image.repository=registry.yourcompany.com:5000/appian/operator \</span>
+  <span class="cmd">--set image.tag=&lt;version&gt; \</span>
+  <span class="cmd">--set imagePullSecrets[0].name=appian-pull-secret \</span>
+  <span class="cmd">--set global.imagePullSecrets[0].name=appian-pull-secret</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">4.3</span>Verify Installation</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc get pods -n appian-operator</span>
+<span class="cc"># Expected: appian-operator-&lt;hash&gt; Running 1/1</span>
+<span class="cmd">oc get crd | grep appian</span>
+<span class="cc"># Expected: appians.crd.k8s.appian.com</span>
+<span class="cmd">oc get pod -n appian-operator -o jsonpath='{.items[0].spec.serviceAccountName}'</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">4.4</span>Operator Failure Matrix</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Symptom</th><th>Root Cause</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold" style="color:var(--red)">Webhook Cert Pending</td><td>cert-manager not ready</td><td><code>oc get certificaterequest -n appian-operator</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--red)">ImagePullBackOff</td><td>Wrong registry secret</td><td><code>oc describe pod | grep -A5 image</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--red)">CRD Not Found</td><td>Helm install failed</td><td><code>helm status appian-operator -n appian-operator</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--red)">Operator CrashLoop</td><td>Wrong image tag</td><td><code>oc logs deploy/appian-operator --tail=50</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--warn)">Webhook 500</td><td>CA bundle not injected</td><td><code>oc get mutatingwebhookconfigurations</code></td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">4.5</span>Health Dashboard</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc get pods,svc,crd,sa,rolebinding -n appian-operator</span></code></pre></div></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>If the operator pod shows <code>ImagePullBackOff</code>, the registry secret is wrong or the image is not in your registry. Fix before proceeding.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 05 -->
+    <div class="section-card" id="sec05">
+      <div class="sec-card-hdr" onclick="toggleSection('sec05')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-server"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 05</span><span class="sec-card-title">Staging Deployment (SA)</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <span class="env-badge env-sa"><span class="fi fi-xs"><svg><use href="#i-server"/></svg></span>SA</span>
+        <p class="body-p" style="display:inline">Deploy and fully validate staging before touching production.</p>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">5.1</span>Namespace &amp; SCC</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc new-project appian-stg</span>
+<span class="cmd">oc create serviceaccount appian-sa -n appian-stg</span>
+<span class="cmd">oc adm policy add-scc-to-user anyuid \</span>
+  <span class="cmd">-z appian-sa -n appian-stg</span>
+<span class="cmd">oc get rolebinding -n appian-stg | grep anyuid</span></code></pre></div></div>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">STAGING ONLY</span><code>anyuid</code> is for staging simplicity. For production, use custom SCC from Section 6.3.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">5.2</span>Storage / PVCs</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · appian-stg-pvc.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> v1
+<span class="ck">kind</span><span class="co">:</span> PersistentVolumeClaim
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-stg-pvc
+  <span class="ck">namespace</span><span class="co">:</span> appian-stg
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">accessModes</span><span class="co">:</span> [<span class="cs">ReadWriteOnce</span>]
+  <span class="ck">storageClassName</span><span class="co">:</span> <span class="cp">&lt;RWO_STORAGE_CLASS&gt;</span>
+  <span class="ck">resources</span><span class="co">:</span>
+    <span class="ck">requests</span><span class="co">:</span>
+      <span class="ck">storage</span><span class="co">:</span> 200Gi</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">5.3</span>Secrets &amp; Licences</h3>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">SECURITY</span>Avoid passing passwords on the command line — they persist in shell history. Use file-based secrets or Vault.</div></div>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc create secret generic k3lic --from-file=k3.lic=/path/to/k3.lic -n appian-stg</span>
+<span class="cmd">oc create secret generic k4lic --from-file=k4.lic=/path/to/k4.lic -n appian-stg</span>
+<span class="cmd">oc create configmap appian-lic --from-file=appian.lic=/path/to/appian.lic -n appian-stg</span>
+<span class="cmd">oc create secret generic sql-server-secrets \</span>
+  <span class="cmd">--from-literal=username="appian_stg" \</span>
+  <span class="cmd">--from-file=password=/path/to/db-password.txt -n appian-stg</span>
+<span class="cmd">oc create secret docker-registry appian-regcred \</span>
+  <span class="cmd">--docker-server=registry.yourcompany.com:5000 \</span>
+  <span class="cmd">--docker-username=admin \</span>
+  <span class="cmd">--docker-password="$(cat /path/to/registry-password.txt)" -n appian-stg</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">5.4</span>Custom Resource (appian.yaml)</h3>
+        <p class="body-p">The <code>serviceAccountName</code> field is critical — without it, pods use <code>default</code> SA and SCC grants have no effect:</p>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · appian-stg.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> crd.k8s.appian.com/v1beta1
+<span class="ck">kind</span><span class="co">:</span> Appian
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-stg
+  <span class="ck">namespace</span><span class="co">:</span> appian-stg
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">version</span><span class="co">:</span> <span class="cp">"26.2.x.x"</span>
+  <span class="ck">serviceAccountName</span><span class="co">:</span> <span class="cs">appian-sa</span>    <span class="cc"># CRITICAL</span>
+  <span class="ck">url</span><span class="co">:</span> <span class="cp">https://appian-stg.yourcompany.com</span>
+  <span class="ck">k3LicSecretName</span><span class="co">:</span> k3lic
+  <span class="ck">k4LicSecretName</span><span class="co">:</span> k4lic
+  <span class="ck">appianLicConfigMapName</span><span class="co">:</span> appian-lic
+  <span class="ck">imagePullSecrets</span><span class="co">:</span>
+  <span class="cv">- name: appian-regcred</span>
+  <span class="ck">imagePullPolicy</span><span class="co">:</span> IfNotPresent
+  <span class="ck">webapp</span><span class="co">:</span>
+    <span class="ck">image</span><span class="co">:</span>
+      <span class="ck">repository</span><span class="co">:</span> <span class="cp">registry.yourcompany.com:5000/appian/webapp</span>
+      <span class="ck">tag</span><span class="co">:</span> <span class="cp">26.2.x.x</span>
+    <span class="ck">replicas</span><span class="co">:</span> 1
+    <span class="ck">resources</span><span class="co">:</span>
+      <span class="ck">requests</span><span class="co">:</span> { cpu: "4", memory: "8Gi" }
+      <span class="ck">limits</span><span class="co">:</span>   { cpu: "8", memory: "16Gi" }</code></pre></div></div>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · deploy</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc apply --dry-run=client -f appian-stg.yaml</span>  <span class="cc"># validate first</span>
+<span class="cmd">oc apply -f appian-stg.yaml -n appian-stg</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">5.5</span>Monitor Startup</h3>
+        <p class="body-p">Components start in order: ZK → Kafka → Search → Data → Engine → Webapp → httpd (~19 min total)</p>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · validate after apply</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">watch -n 5 'oc get pods -n appian-stg'</span>
+
+<span class="cmd">oc get appian appian-stg -n appian-stg -o jsonpath='{.spec.serviceAccountName}'</span>
+<span class="cc"># MUST show: appian-sa (not empty or "default")</span>
+
+<span class="cmd">oc get pods -n appian-stg -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.serviceAccountName}{"\n"}{end}'</span>
+<span class="cc"># ALL pods MUST show: appian-sa</span>
+
+<span class="cmd">oc get pvc -n appian-stg</span>
+<span class="cc"># ALL must show: Bound</span>
+
+<span class="cmd">oc get appians -n appian-stg</span>
+<span class="cc"># PHASE should show: Running</span></code></pre></div></div>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">WARNING</span>Do not kill pods during startup. Full startup takes 15–30 minutes depending on engine replay.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">5.6</span>Staging Validation</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>ID</th><th>Test</th><th>Expected</th></tr></thead>
+          <tbody>
+            <tr><td class="td-accent">V-01</td><td>All pods Running</td><td class="td-ok">all 1/1 Running</td></tr>
+            <tr><td class="td-accent">V-02</td><td>CR status</td><td class="td-ok">PHASE = Running</td></tr>
+            <tr><td class="td-accent">V-03</td><td>Login page loads</td><td class="td-ok">See login form</td></tr>
+            <tr><td class="td-accent">V-04</td><td>Admin login works</td><td class="td-ok">Login with admin creds</td></tr>
+            <tr><td class="td-accent">V-05</td><td>Search works</td><td class="td-ok">Index health green</td></tr>
+            <tr><td class="td-accent">V-06</td><td>Health endpoint</td><td class="td-ok"><code>curl /suite/health</code> → 200</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>Do not proceed to Section 06 until all staging validations pass.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 06 -->
+    <div class="section-card" id="sec06">
+      <div class="sec-card-hdr" onclick="toggleSection('sec06')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-shield"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 06</span><span class="sec-card-title">Production Deployment (HA)</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <span class="env-badge env-ha"><span class="fi fi-xs"><svg><use href="#i-shield"/></svg></span>HA</span>
+        <p class="body-p" style="display:inline">3 replicas of every component across worker nodes.</p>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.1</span>HA Storage Requirements</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Component</th><th>Type</th><th>Access</th><th>Min IOPS</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Webapp shared</td><td>CephFS</td><td class="td-accent">RWX</td><td>Standard</td></tr>
+            <tr><td class="td-bold">Kafka</td><td>Ceph RBD</td><td>RWO</td><td style="color:var(--red)">3,000+</td></tr>
+            <tr><td class="td-bold">Zookeeper</td><td>Ceph RBD</td><td>RWO</td><td>1,500+</td></tr>
+            <tr><td class="td-bold">Search</td><td>Ceph RBD</td><td>RWO</td><td>1,500+</td></tr>
+            <tr><td class="td-bold">Data Server</td><td>NVMe/RBD</td><td>RWO</td><td>&lt;1ms latency</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>NEVER use CephFS/NFS for Kafka. CephFS causes 3–5× performance degradation for Kafka WALs. Use Ceph RBD block.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.2</span>Production Namespace</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc new-project appian-prod</span>
+<span class="cmd">oc create serviceaccount appian-sa -n appian-prod</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.3</span>Custom SCC (Production)</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · appian-restricted-scc.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> security.openshift.io/v1
+<span class="ck">kind</span><span class="co">:</span> SecurityContextConstraints
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-restricted-uid-10006
+<span class="ck">allowPrivilegedContainer</span><span class="co">:</span> <span class="cn">false</span>
+<span class="ck">allowPrivilegeEscalation</span><span class="co">:</span> <span class="cn">false</span>
+<span class="ck">requiredDropCapabilities</span><span class="co">:</span> [ALL]
+<span class="ck">runAsUser</span><span class="co">:</span>
+  <span class="ck">type</span><span class="co">:</span> MustRunAs
+  <span class="ck">uid</span><span class="co">:</span> 10006
+<span class="ck">seLinuxContext</span><span class="co">:</span>
+  <span class="ck">type</span><span class="co">:</span> RunAsAny
+<span class="ck">fsGroup</span><span class="co">:</span>
+  <span class="ck">type</span><span class="co">:</span> MustRunAs
+  <span class="ck">ranges</span><span class="co">:</span> [{min: 10006, max: 10006}]
+<span class="ck">supplementalGroups</span><span class="co">:</span>
+  <span class="ck">type</span><span class="co">:</span> MustRunAs
+  <span class="ck">ranges</span><span class="co">:</span> [{min: 10006, max: 10006}]
+<span class="ck">volumes</span><span class="co">:</span> [configMap, downwardAPI, emptyDir, persistentVolumeClaim, projected, secret]
+<span class="ck">readOnlyRootFilesystem</span><span class="co">:</span> <span class="cn">false</span>
+<span class="ck">seccompProfiles</span><span class="co">:</span> [runtime/default]</code></pre></div></div>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc apply -f appian-restricted-scc.yaml</span>
+<span class="cmd">oc adm policy add-scc-to-user appian-restricted-uid-10006 \</span>
+  <span class="cmd">-z appian-sa -n appian-prod</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.4</span>NetworkPolicy — Zero-Trust</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · networkpolicies.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc"># 0. Allow DNS egress (apply FIRST)</span>
+<span class="ck">apiVersion</span><span class="co">:</span> networking.k8s.io/v1
+<span class="ck">kind</span><span class="co">:</span> NetworkPolicy
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-allow-dns-egress
+  <span class="ck">namespace</span><span class="co">:</span> appian-prod
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">podSelector</span><span class="co">:</span> {}
+  <span class="ck">policyTypes</span><span class="co">:</span> [Egress]
+  <span class="ck">egress</span><span class="co">:</span>
+  - <span class="ck">to</span><span class="co">:</span>
+    - <span class="ck">namespaceSelector</span><span class="co">:</span>
+        <span class="ck">matchLabels</span><span class="co">:</span>
+          <span class="ck">kubernetes.io/metadata.name</span><span class="co">:</span> openshift-dns
+    <span class="ck">ports</span><span class="co">:</span>
+    - {protocol: UDP, port: 53}
+    - {protocol: TCP, port: 53}
+---
+<span class="cc"># 1. Default deny all</span>
+<span class="ck">apiVersion</span><span class="co">:</span> networking.k8s.io/v1
+<span class="ck">kind</span><span class="co">:</span> NetworkPolicy
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-default-deny
+  <span class="ck">namespace</span><span class="co">:</span> appian-prod
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">podSelector</span><span class="co">:</span> {}
+  <span class="ck">policyTypes</span><span class="co">:</span> [Ingress, Egress]
+---
+<span class="cc"># 2. Allow ingress from router to webapp</span>
+<span class="ck">apiVersion</span><span class="co">:</span> networking.k8s.io/v1
+<span class="ck">kind</span><span class="co">:</span> NetworkPolicy
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-allow-ingress-webapp
+  <span class="ck">namespace</span><span class="co">:</span> appian-prod
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">podSelector</span><span class="co">:</span>
+    <span class="ck">matchLabels</span><span class="co">:</span> {app.kubernetes.io/component: webapp}
+  <span class="ck">policyTypes</span><span class="co">:</span> [Ingress]
+  <span class="ck">ingress</span><span class="co">:</span>
+  - <span class="ck">from</span><span class="co">:</span>
+    - <span class="ck">namespaceSelector</span><span class="co">:</span>
+        <span class="ck">matchLabels</span><span class="co">:</span> {name: openshift-ingress}
+    <span class="ck">ports</span><span class="co">:</span> [{protocol: TCP, port: 8080}]
+---
+<span class="cc"># 3. Internal pod-to-pod + SQL egress</span>
+<span class="ck">apiVersion</span><span class="co">:</span> networking.k8s.io/v1
+<span class="ck">kind</span><span class="co">:</span> NetworkPolicy
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-allow-internal
+  <span class="ck">namespace</span><span class="co">:</span> appian-prod
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">podSelector</span><span class="co">:</span> {}
+  <span class="ck">policyTypes</span><span class="co">:</span> [Ingress, Egress]
+  <span class="ck">ingress</span><span class="co">:</span>
+  - <span class="ck">from</span><span class="co">:</span> [{podSelector: {}}]
+  <span class="ck">egress</span><span class="co">:</span>
+  - <span class="ck">to</span><span class="co">:</span> [{podSelector: {}}]
+  - <span class="ck">ports</span><span class="co">:</span> [{protocol: TCP, port: 1433}]</code></pre></div></div>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc apply -f networkpolicies.yaml</span>
+<span class="cmd">oc get networkpolicy -n appian-prod</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.5</span>PDB &amp; Anti-Affinity</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · pdb.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> policy/v1
+<span class="ck">kind</span><span class="co">:</span> PodDisruptionBudget
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-webapp-pdb
+  <span class="ck">namespace</span><span class="co">:</span> appian-prod
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">minAvailable</span><span class="co">:</span> 1
+  <span class="ck">selector</span><span class="co">:</span>
+    <span class="ck">matchLabels</span><span class="co">:</span> {app.kubernetes.io/component: webapp}
+---
+<span class="ck">apiVersion</span><span class="co">:</span> policy/v1
+<span class="ck">kind</span><span class="co">:</span> PodDisruptionBudget
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-kafka-pdb
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">minAvailable</span><span class="co">:</span> 2
+  <span class="ck">selector</span><span class="co">:</span>
+    <span class="ck">matchLabels</span><span class="co">:</span> {app.kubernetes.io/component: kafka}
+---
+<span class="ck">apiVersion</span><span class="co">:</span> policy/v1
+<span class="ck">kind</span><span class="co">:</span> PodDisruptionBudget
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-zookeeper-pdb
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">minAvailable</span><span class="co">:</span> 2
+  <span class="ck">selector</span><span class="co">:</span>
+    <span class="ck">matchLabels</span><span class="co">:</span> {app.kubernetes.io/component: zookeeper}</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.6</span>Topology Spread</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · topologySpreadConstraints</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">webapp</span><span class="co">:</span>
+    <span class="ck">replicas</span><span class="co">:</span> 3
+    <span class="ck">topologySpreadConstraints</span><span class="co">:</span>
+    - <span class="ck">maxSkew</span><span class="co">:</span> 1
+      <span class="ck">topologyKey</span><span class="co">:</span> kubernetes.io/hostname
+      <span class="ck">whenUnsatisfiable</span><span class="co">:</span> DoNotSchedule
+      <span class="ck">labelSelector</span><span class="co">:</span>
+        <span class="ck">matchLabels</span><span class="co">:</span>
+          <span class="ck">app.kubernetes.io/component</span><span class="co">:</span> webapp</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.7</span>ResourceQuota &amp; LimitRange</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · resource-guardrails.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> v1
+<span class="ck">kind</span><span class="co">:</span> ResourceQuota
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-prod-quota
+  <span class="ck">namespace</span><span class="co">:</span> appian-prod
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">hard</span><span class="co">:</span>
+    <span class="ck">requests.cpu</span><span class="co">:</span> "80"
+    <span class="ck">requests.memory</span><span class="co">:</span> 160Gi
+    <span class="ck">limits.cpu</span><span class="co">:</span> "120"
+    <span class="ck">limits.memory</span><span class="co">:</span> 300Gi</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.8</span>HPA for httpd</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc autoscale deployment/&lt;site-name&gt;-httpd -n appian-prod \</span>
+  <span class="cmd">--min=2 --max=6 --cpu-percent=70</span>
+<span class="cmd">oc get hpa -n appian-prod</span></code></pre></div></div>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">WARNING</span>Do NOT autoscale Kafka, ZK, Data Server, or Service Manager. Use CR <code>replicas</code> field instead.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.9</span>HA Validation &amp; Node Drain</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · HA validation</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc"># Kill one webapp — operator must recreate within 60s</span>
+<span class="cmd">oc delete pod &lt;webapp-pod-0&gt; -n appian-prod</span>
+<span class="cmd">curl -sk https://&lt;APPIAN_URL&gt;/suite/health</span>
+
+<span class="cc"># Verify anti-affinity: no two same-component pods on same node</span>
+<span class="cmd">oc get pods -n appian-prod -o wide | awk '{print $1, $7}' | sort -k2</span>
+
+<span class="cc"># Node drain procedure</span>
+<span class="cmd">oc adm cordon &lt;worker-node&gt;</span>
+<span class="cmd">oc adm drain &lt;worker-node&gt; --ignore-daemonsets --delete-emptydir-data --timeout=120s</span>
+<span class="cmd">oc adm uncordon &lt;worker-node&gt;</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">6.10</span>Go-Live Checklist</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>#</th><th>Validation</th></tr></thead>
+          <tbody>
+            <tr><td class="td-accent">01</td><td>All staging validations passed</td></tr>
+            <tr><td class="td-accent">02</td><td>HA failover test: delete pod — site stayed accessible</td></tr>
+            <tr><td class="td-accent">03</td><td>Node drain test: pods rescheduled, zero downtime</td></tr>
+            <tr><td class="td-accent">04</td><td>Velero backup tested AND restore validated</td></tr>
+            <tr><td class="td-accent">05</td><td>Monitoring alerts configured and firing</td></tr>
+            <tr><td class="td-accent">06</td><td>Large file upload test (&gt; 100 MB) — no 413</td></tr>
+            <tr><td class="td-accent">07</td><td>Versions recorded in CMDB</td></tr>
+            <tr><td class="td-accent">08</td><td>DR runbook documented</td></tr>
+            <tr><td class="td-accent">09</td><td>Engine checkpoint verified</td></tr>
+            <tr><td class="td-accent">10</td><td>etcd backup scheduled on control-plane</td></tr>
+            <tr><td class="td-accent">11</td><td>NetworkPolicies applied and verified</td></tr>
+            <tr><td class="td-accent">12</td><td>ResourceQuota / LimitRange applied</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- SEC 07 -->
+    <div class="section-card" id="sec07">
+      <div class="sec-card-hdr" onclick="toggleSection('sec07')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-globe"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 07</span><span class="sec-card-title">Network &amp; Ingress</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <h3 class="sub-hdr"><span class="sub-hdr-num">7.0</span>Ingress Pattern by Environment</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Env</th><th>Pattern</th><th>Session</th><th>TLS</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Dev</td><td>NodePort / Route</td><td>None</td><td>Edge</td></tr>
+            <tr><td class="td-bold">Staging</td><td>OCP Route</td><td>None</td><td>Reencrypt</td></tr>
+            <tr><td class="td-bold">Production</td><td>F5 + NGINX</td><td>JSESSIONID</td><td>Reencrypt</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>Appian <strong>must</strong> be told it's behind HTTPS. Set <code>conf.suite.SCHEME=https</code> and <code>conf.suite.SERVER_AND_PORT=appian.yourcompany.com:443</code>. Without these, OAuth, file downloads, and SAML break.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">7.1</span>OpenShift Route</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · route.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> route.openshift.io/v1
+<span class="ck">kind</span><span class="co">:</span> Route
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-route
+  <span class="ck">annotations</span><span class="co">:</span>
+    <span class="ck">haproxy.router.openshift.io/timeout</span><span class="co">:</span> 300s
+    <span class="ck">haproxy.router.openshift.io/hsts_header</span><span class="co">:</span> max-age=31536000;includeSubDomains
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">host</span><span class="co">:</span> appian.yourcompany.com
+  <span class="ck">to</span><span class="co">:</span>
+    <span class="ck">kind</span><span class="co">:</span> Service
+    <span class="ck">name</span><span class="co">:</span> appian-httpd
+  <span class="ck">port</span><span class="co">:</span>
+    <span class="ck">targetPort</span><span class="co">:</span> https
+  <span class="ck">tls</span><span class="co">:</span>
+    <span class="ck">termination</span><span class="co">:</span> reencrypt
+    <span class="ck">insecureEdgeTerminationPolicy</span><span class="co">:</span> Redirect</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">7.2</span>NGINX Passthrough</h3>
+        <div class="callout callout-note"><span class="fi fi-sm" style="color:var(--accent2)"><svg><use href="#i-info"/></svg></span><div><span class="callout-lbl">NOTE</span><code>proxy-body-size="500m"</code> and timeout &gt; 300s are mandatory. Default NGINX timeouts (60s) cause upload failures.</div></div>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">nginx · upstream</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">upstream</span> appian_ocp {
+  <span class="cmd">server</span> <span class="cp">router-default.apps.cluster.example.com</span>:443;
+  <span class="cmd">keepalive</span> 32;
+}
+<span class="ck">server</span> {
+  <span class="cmd">listen</span> 443 ssl;
+  <span class="cmd">server_name</span> appian.yourcompany.com;
+  <span class="cmd">ssl_certificate</span>     /etc/ssl/appian.crt;
+  <span class="cmd">ssl_certificate_key</span> /etc/ssl/appian.key;
+  <span class="cmd">proxy_pass</span> https://appian_ocp;
+  <span class="cmd">proxy_set_header</span> X-Forwarded-For $proxy_add_x_forwarded_for;
+  <span class="cmd">proxy_set_header</span> Host $host;
+}</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">7.3</span>cert-manager Install</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc apply -f https://github.com/cert-manager/cert-manager/releases/latest/download/cert-manager.yaml</span>
+<span class="cmd">oc get pods -n cert-manager -w</span>
+<span class="cc"># Wait for cert-manager, cainjector, webhook — all 1/1 Running</span></code></pre></div></div>
+      </div>
+    </div>
+
+    <!-- SEC 08 -->
+    <div class="section-card" id="sec08">
+      <div class="sec-card-hdr" onclick="toggleSection('sec08')">
+        <div class="sec-icon-wrap warn"><span class="fi fi-md"><svg><use href="#i-db"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 08</span><span class="sec-card-title">Database Configuration</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.1</span>SQL Server Setup</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">sql · setup.sql</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc">-- Create Appian Database</span>
+<span class="cmd">CREATE DATABASE AppianDB</span>
+  <span class="cmd">COLLATE SQL_Latin1_General_CP1_CI_AS;</span>
+<span class="cmd">GO</span>
+<span class="cc">-- Enable RCSI</span>
+<span class="cmd">ALTER DATABASE AppianDB</span>
+  <span class="cmd">SET READ_COMMITTED_SNAPSHOT ON;</span>
+<span class="cmd">GO</span>
+<span class="cmd">ALTER DATABASE AppianDB</span>
+  <span class="cmd">SET ALLOW_SNAPSHOT_ISOLATION ON;</span>
+<span class="cmd">GO</span>
+<span class="cc">-- Performance tuning</span>
+<span class="cmd">EXEC sp_configure 'max degree of parallelism', 1;</span>
+<span class="cmd">EXEC sp_configure 'cost threshold for parallelism', 50;</span>
+<span class="cmd">RECONFIGURE;</span>
+<span class="cmd">GO</span>
+<span class="cc">-- Create app user</span>
+<span class="cmd">CREATE LOGIN appian_user WITH PASSWORD = 'StrongPass!123';</span>
+<span class="cmd">USE AppianDB;</span>
+<span class="cmd">CREATE USER appian_user FOR LOGIN appian_user;</span>
+<span class="cmd">ALTER ROLE db_owner ADD MEMBER appian_user;</span>
+<span class="cmd">GO</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.2</span>JDBC URL Reference</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>RDBMS</th><th>JDBC URL (with SSL)</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">SQL Server</td><td><code>jdbc:sqlserver://host:1433;databaseName=db;encrypt=true</code></td></tr>
+            <tr><td class="td-bold">MariaDB</td><td><code>jdbc:mariadb://host:3306/db?useSSL=true</code></td></tr>
+            <tr><td class="td-bold">PostgreSQL</td><td><code>jdbc:postgresql://host:5432/db?ssl=true</code></td></tr>
+            <tr><td class="td-bold">MySQL</td><td><code>jdbc:mysql://host:3306/db?useSSL=true</code></td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.3</span>Test Connectivity</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc debug node/&lt;worker&gt; -- chroot /host curl -v telnet://&lt;sql-ip&gt;:1433</span>
+<span class="cmd">oc exec -it deploy/appian-prod-webapp -n appian-prod -- nc -zv &lt;sql-ip&gt; 1433</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.4</span>Post-Deployment Tasks</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Task</th><th>How</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Change admin password</td><td>Admin Console → User Management</td></tr>
+            <tr><td class="td-bold">Register data sources</td><td>Admin Console → Data Sources</td></tr>
+            <tr><td class="td-bold">Configure SMTP</td><td>CR spec or Admin Console</td></tr>
+            <tr><td class="td-bold">Configure logging</td><td>CR <code>customProperties</code></td></tr>
+            <tr><td class="td-bold">Verify search indexing</td><td>Admin Console → Search</td></tr>
+            <tr><td class="td-bold">Create initial users</td><td>Admin Console → User Management</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.5</span>Custom Properties (CR)</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · customProperties in CR</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">webapp</span><span class="co">:</span>
+    <span class="ck">customProperties</span><span class="co">:</span>
+      <span class="cc"># Proxy Awareness (MANDATORY behind F5/NGINX)</span>
+      <span class="ck">conf.suite.SCHEME</span><span class="co">:</span> https
+      <span class="ck">conf.suite.SERVER_AND_PORT</span><span class="co">:</span> <span class="cp">appian.yourcompany.com</span>
+      <span class="cc"># SMTP</span>
+      <span class="ck">conf.mailhandler.smtphost</span><span class="co">:</span> <span class="cp">smtp.yourcompany.com</span>
+      <span class="ck">conf.mailhandler.smtpport</span><span class="co">:</span> 587
+      <span class="cc"># Logging (WARN for prod, DEBUG for diagnosis)</span>
+      <span class="ck">conf.logging.jboss.server.log.level</span><span class="co">:</span> WARN</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.6</span>LDAP / SAML / SSO</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Auth</th><th>Setting</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">LDAP</td><td>CR <code>conf.authentication.ldap.*</code></td><td>Test: <code>oc exec -- nc -zv ldap.corp:636</code></td></tr>
+            <tr><td class="td-bold">SAML 2.0</td><td>Admin Console → Auth</td><td>Set SCHEME=https first</td></tr>
+            <tr><td class="td-bold">OIDC</td><td>Admin Console → Auth</td><td>Redirect: <code>/suite/auth/oidc/callback</code></td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.7</span>Smoke Tests</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>#</th><th>Test</th><th>Validates</th></tr></thead>
+          <tbody>
+            <tr><td class="td-accent">1</td><td>Login, change admin password</td><td>DB + auth</td></tr>
+            <tr><td class="td-accent">2</td><td>Check <code>/suite/admin</code> System Health</td><td>All engines healthy</td></tr>
+            <tr><td class="td-accent">3</td><td>Create a constant</td><td>Data Server + DB write</td></tr>
+            <tr><td class="td-accent">4</td><td>Run a process model</td><td>Engine + Kafka</td></tr>
+            <tr><td class="td-accent">5</td><td>Upload document (&gt; 1 MB)</td><td>PVC storage</td></tr>
+            <tr><td class="td-accent">6</td><td>Search for document</td><td>Search indexing</td></tr>
+            <tr><td class="td-accent">7</td><td>Create a Record Type query</td><td>Data Fabric</td></tr>
+            <tr><td class="td-accent">8</td><td><code>curl /suite/healthCheck</code></td><td>All-component health</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>If smoke test #4 (process) fails but login works, engine replay incomplete. Check: <code>oc logs -l app.kubernetes.io/component=service-manager --tail=100</code></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">8.8</span>Database Sizing</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Tier</th><th>CPU</th><th>RAM</th><th>Data</th><th>Log</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Dev</td><td>4</td><td>16 Gi</td><td>100 Gi</td><td>20 Gi</td></tr>
+            <tr><td class="td-bold">Staging</td><td>8</td><td>32 Gi</td><td>500 Gi</td><td>100 Gi</td></tr>
+            <tr><td class="td-bold">Production</td><td>16+</td><td>64+ Gi</td><td>2+ Ti</td><td>500 Gi</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-tip"><span class="fi fi-sm" style="color:var(--green)"><svg><use href="#i-check-circle"/></svg></span><div><span class="callout-lbl">TIP</span>After initial schema creation, revoke <code>db_owner</code> and grant only <code>db_datareader</code>, <code>db_datawriter</code>, <code>db_ddladmin</code>.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 09 -->
+    <div class="section-card" id="sec09">
+      <div class="sec-card-hdr" onclick="toggleSection('sec09')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-wrench"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 09</span><span class="sec-card-title">Troubleshooting</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <h3 class="sub-hdr"><span class="sub-hdr-num">9.1</span>First Principles</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Symptom</th><th>First Command</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold" style="color:var(--red)">Pod Pending</td><td><code>oc describe pod</code> → Events</td></tr>
+            <tr><td class="td-bold" style="color:var(--red)">CrashLoopBackOff</td><td><code>oc logs &lt;pod&gt; --previous</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--red)">ImagePullBackOff</td><td><code>oc describe pod</code> → "auth required"</td></tr>
+            <tr><td class="td-bold" style="color:var(--warn)">Site Not Ready</td><td><code>oc describe appian</code> → Conditions</td></tr>
+            <tr><td class="td-bold" style="color:var(--warn)">Login fails</td><td><code>oc logs -l component=webapp</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--warn)">PVC Pending</td><td><code>oc describe pvc</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--red)">OOMKilled</td><td>Increase <code>resources.limits.memory</code></td></tr>
+            <tr><td class="td-bold" style="color:var(--warn)">Wrong SA</td><td><code>oc get pod -o jsonpath='{.spec.serviceAccountName}'</code></td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">9.2</span>ImagePullBackOff Step-by-Step</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc"># 1. Check the exact error</span>
+<span class="cmd">oc describe pod &lt;pod&gt; -n &lt;ns&gt; | grep -A5 "Events"</span>
+<span class="cc"># 2. Test registry access</span>
+<span class="cmd">oc debug node/&lt;worker&gt; -- chroot /host \</span>
+  <span class="cmd">curl -v https://registry.yourcompany.com:5000/v2/_catalog</span>
+<span class="cc"># 3. Verify secret</span>
+<span class="cmd">oc get secret appian-regcred -n &lt;ns&gt; -o jsonpath='{.data.\.dockerconfigjson}' | base64 -d</span>
+<span class="cc"># 4. Verify image exists</span>
+<span class="cmd">skopeo list-tags docker://registry.yourcompany.com:5000/appian/webapp</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">9.3</span>Engine Replay Issues</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc logs -n appian-prod -l app.kubernetes.io/component=service-manager --follow</span>
+<span class="cc"># Look for "replaying" → then "Completed replay"</span>
+<span class="cc"># Create checkpoint BEFORE planned restarts</span>
+<span class="cmd">oc exec -it deploy/appian-prod-service-manager -n appian-prod -- \</span>
+  <span class="cmd">/usr/local/appian/ae/bin/checkpoint.sh</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">9.4</span>Support Bundle</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · appian-support-bundle.sh</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc">#!/bin/bash</span>
+<span class="cp">NS=${1:-appian-prod}</span>
+<span class="cp">BUNDLE="appian-support-$(date +%Y%m%d-%H%M)"</span>
+<span class="cmd">mkdir -p $BUNDLE</span>
+<span class="cmd">for pod in $(oc get pods -n $NS -o name); do</span>
+<span class="cmd">  oc logs $pod -n $NS --tail=500 &gt; "$BUNDLE/$(basename $pod).log" 2&gt;&amp;1</span>
+<span class="cmd">done</span>
+<span class="cmd">oc logs deploy/appian-operator -n appian-operator --tail=500 &gt; "$BUNDLE/operator.log" 2&gt;&amp;1</span>
+<span class="cmd">oc get appian -n $NS -o yaml &gt; "$BUNDLE/appian-cr.yaml"</span>
+<span class="cmd">oc get events -n $NS --sort-by=.lastTimestamp &gt; "$BUNDLE/events.txt"</span>
+<span class="cmd">oc adm inspect namespace/$NS --dest-dir="$BUNDLE/inspect" 2&gt;/dev/null</span>
+<span class="cmd">tar czf ${BUNDLE}.tar.gz $BUNDLE/</span>
+<span class="cmd">echo "✅ Bundle: ${BUNDLE}.tar.gz — attach to MyAppian ticket"</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">9.5</span>ZK Quorum Loss</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc get pods -n appian-prod -l app.kubernetes.io/component=zookeeper</span>
+<span class="cmd">oc logs -n appian-prod -l app.kubernetes.io/component=zookeeper --tail=50</span>
+<span class="cc"># Recovery: restart one at a time (NEVER all at once)</span>
+<span class="cmd">oc delete pod appian-prod-zookeeper-0 -n appian-prod</span>
+<span class="cc"># Wait for rejoin before restarting next</span></code></pre></div></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>Never delete all ZK pods simultaneously — destroys quorum state.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">9.6</span>Permission Denied After DR</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc debug deploy/appian-prod-webapp -n appian-prod</span>
+<span class="cmd">ls -lan /usr/local/appian/ae</span>
+<span class="cc"># Owner should be 10006:10006. If wrong:</span>
+<span class="cmd">chown -R 10006:10006 /usr/local/appian/ae</span>
+<span class="cc"># Verify SCC (lost on namespace recreation)</span>
+<span class="cmd">oc get rolebinding -n appian-prod | grep anyuid</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">9.7</span>Air-Gap: Registry Cert Errors</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc"># Symptom: x509: certificate signed by unknown authority</span>
+<span class="cmd">oc create configmap registry-ca -n openshift-config \</span>
+  <span class="cmd">--from-file=registry.yourcompany.com..5000=/path/to/registry.crt</span>
+<span class="cmd">oc patch image.config.openshift.io/cluster --type=merge \</span>
+  <span class="cmd">-p '{"spec":{"additionalTrustedCA":{"name":"registry-ca"}}}'</span>
+<span class="cmd">oc get machineconfigpool -w</span>
+<span class="cc"># Wait until UPDATED=True for all pools</span></code></pre></div></div>
+      </div>
+    </div>
+
+    <!-- SEC 10 -->
+    <div class="section-card" id="sec10">
+      <div class="sec-card-hdr" onclick="toggleSection('sec10')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-activity"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 10</span><span class="sec-card-title">Health Checks &amp; Monitoring</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <h3 class="sub-hdr"><span class="sub-hdr-num">10.1</span>5-Minute Morning Check</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · daily-check.sh</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc"># 1. All pods running?</span>
+<span class="cmd">oc get pods -n appian-prod | grep -v Running</span>
+<span class="cc"># 2. CR healthy?</span>
+<span class="cmd">oc get appians -n appian-prod</span>
+<span class="cc"># 3. No pod restarts?</span>
+<span class="cmd">oc get pods -n appian-prod --sort-by=.status.containerStatuses[0].restartCount</span>
+<span class="cc"># 4. Resource pressure?</span>
+<span class="cmd">oc adm top nodes</span>
+<span class="cmd">oc adm top pods -n appian-prod</span>
+<span class="cc"># 5. Site responding?</span>
+<span class="cmd">curl -sk -o /dev/null -w "%{http_code}" https://&lt;APPIAN_URL&gt;/suite/health</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">10.2</span>Monitoring Alerts</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Alert</th><th>Severity</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Pod not Running &gt; 5 min</td><td style="color:var(--red)">Critical</td><td>Investigate immediately</td></tr>
+            <tr><td>CR status != Ready</td><td style="color:var(--red)">Critical</td><td>Check operator logs</td></tr>
+            <tr><td>PVC usage &gt; 80%</td><td style="color:var(--warn)">Warning</td><td>Plan expansion</td></tr>
+            <tr><td>Restarts &gt; 5/hr</td><td style="color:var(--warn)">Warning</td><td>Check pod logs</td></tr>
+            <tr><td>SQL port unreachable</td><td style="color:var(--red)">Critical</td><td>Escalate to DBA</td></tr>
+            <tr><td>Kafka lag &gt; 10k</td><td style="color:var(--red)">Critical</td><td>Scale engine resources</td></tr>
+            <tr><td>CPU throttling &gt; 25%</td><td style="color:var(--warn)">Warning</td><td>Increase CPU limits</td></tr>
+            <tr><td>DB pool &gt; 90%</td><td style="color:var(--red)">Critical</td><td>Increase pool / check leaks</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">10.3</span>Prometheus Alerts</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">yaml · alerting-rules.yaml</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="ck">apiVersion</span><span class="co">:</span> monitoring.coreos.com/v1
+<span class="ck">kind</span><span class="co">:</span> PrometheusRule
+<span class="ck">metadata</span><span class="co">:</span>
+  <span class="ck">name</span><span class="co">:</span> appian-prod-critical-alerts
+  <span class="ck">namespace</span><span class="co">:</span> appian-prod
+<span class="ck">spec</span><span class="co">:</span>
+  <span class="ck">groups</span><span class="co">:</span>
+  <span class="cv">- name: appian-critical</span>
+    <span class="ck">rules</span><span class="co">:</span>
+    <span class="cv">- alert: AppianPodRestartLoop</span>
+      <span class="ck">expr</span><span class="co">:</span> rate(kube_pod_container_status_restarts_total{namespace="appian-prod"}[1h]) &gt; 3
+      <span class="ck">for</span><span class="co">:</span> 5m
+      <span class="ck">labels</span><span class="co">:</span> {severity: critical}
+    <span class="cv">- alert: AppianPVCNearFull</span>
+      <span class="ck">expr</span><span class="co">:</span> (kubelet_volume_stats_used_bytes / kubelet_volume_stats_capacity_bytes) &gt; 0.80
+      <span class="ck">for</span><span class="co">:</span> 10m
+      <span class="ck">labels</span><span class="co">:</span> {severity: warning}
+    <span class="cv">- alert: AppianCPUThrottling</span>
+      <span class="ck">expr</span><span class="co">:</span> rate(container_cpu_cfs_throttled_seconds_total{namespace="appian-prod"}[5m]) &gt; 0.25
+      <span class="ck">for</span><span class="co">:</span> 10m
+      <span class="ck">labels</span><span class="co">:</span> {severity: warning}</code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">10.4</span>Weekly Extended Checks</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Task</th><th>Command</th><th>Freq</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Node pressure</td><td><code>oc adm top nodes</code></td><td>Weekly</td></tr>
+            <tr><td class="td-bold">PVC disk usage</td><td><code>oc exec &lt;pod&gt; -- df -h /data</code></td><td>Weekly</td></tr>
+            <tr><td class="td-bold">Kafka consumer lag</td><td><code>oc exec &lt;kafka&gt; -- kafka-consumer-groups.sh</code></td><td>Weekly</td></tr>
+            <tr><td class="td-bold">Cert expiry</td><td><code>openssl s_client -connect &lt;URL&gt;:443</code></td><td>Weekly</td></tr>
+            <tr><td class="td-bold">Pod restarts</td><td><code>oc get pods --sort-by=restartCount</code></td><td>Weekly</td></tr>
+            <tr><td class="td-bold">Velero status</td><td><code>velero backup describe --details</code></td><td>Weekly</td></tr>
+            <tr><td class="td-bold">DR restore test</td><td>Restore to test namespace</td><td>Monthly</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">WARNING</span>Apply PrometheusRules before go-live. Without alerting, incidents are reported by users rather than detected by ops.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 11 -->
+    <div class="section-card" id="sec11">
+      <div class="sec-card-hdr" onclick="toggleSection('sec11')">
+        <div class="sec-icon-wrap warn"><span class="fi fi-md"><svg><use href="#i-archive"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 11</span><span class="sec-card-title">Disaster Recovery</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <p class="body-p">Three independent backup planes — all required for full recovery.</p>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Plane</th><th>Tool</th><th>Covers</th><th>Does NOT Cover</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">K8s Objects</td><td>Velero/OADP</td><td>Deployments, Secrets, CR</td><td>PV data content</td></tr>
+            <tr><td class="td-bold">PV Snapshots</td><td>Velero + CSI</td><td>Docs, indices, engine state</td><td>Database contents</td></tr>
+            <tr><td class="td-bold">Database</td><td>SQL .bak</td><td>Process data, config, users</td><td>K8s objects</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL ORDER</span>Restore data FIRST. Deploy Appian SECOND. Deploying first creates empty PVCs = data loss.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">11.1</span>Velero Backup Setup</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc"># Create scheduled backup</span>
+<span class="cmd">velero schedule create appian-daily \</span>
+  <span class="cmd">--schedule="0 2 * * *" \</span>
+  <span class="cmd">--include-namespaces appian-prod \</span>
+  <span class="cmd">--snapshot-volumes=true \</span>
+  <span class="cmd">--ttl 168h</span>
+
+<span class="cc"># Create engine checkpoint BEFORE snapshot</span>
+<span class="cmd">oc exec -n appian-prod \</span>
+  <span class="cmd">$(oc get pod -n appian-prod -l app.kubernetes.io/component=service-manager -o name | head -1) \</span>
+  <span class="cmd">-- /usr/local/appian/ae/bin/checkpoint.sh</span>
+
+<span class="cc"># Manual backup</span>
+<span class="cmd">velero backup create appian-$(date +%Y%m%d) \</span>
+  <span class="cmd">--include-namespaces appian-prod \</span>
+  <span class="cmd">--wait</span>
+
+<span class="cc"># Test restore to separate namespace monthly</span>
+<span class="cmd">velero restore create --from-backup &lt;backup-name&gt; \</span>
+  <span class="cmd">--namespace-mapping appian-prod:appian-prod-restore-test</span></code></pre></div></div>
+        <div class="callout callout-warn"><span class="fi fi-sm" style="color:var(--warn)"><svg><use href="#i-alert"/></svg></span><div><span class="callout-lbl">WARNING</span>Verify restore weekly — not just backup. A backup never tested is untested.</div></div>
+      </div>
+    </div>
+
+    <!-- SEC 12 -->
+    <div class="section-card" id="sec12">
+      <div class="sec-card-hdr" onclick="toggleSection('sec12')">
+        <div class="sec-icon-wrap blue"><span class="fi fi-md"><svg><use href="#i-refresh"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 12</span><span class="sec-card-title">Upgrades</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <p class="body-p">Always upgrade Operator first, then the site. Never both at the same time.</p>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">12.0</span>Pre-Upgrade Gate Script</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash · pre-upgrade-gate.sh</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc">#!/bin/bash</span>
+<span class="cp">NS=${1:-appian-prod}</span>
+<span class="cmd">echo "=== PRE-UPGRADE GATE ==="</span>
+<span class="cmd">SM_POD=$(oc get pod -n $NS -l app.kubernetes.io/component=service-manager -o name | head -1)</span>
+<span class="cmd">oc exec -n $NS $SM_POD -- /usr/local/appian/ae/bin/checkpoint.sh || { echo "❌ Checkpoint FAILED"; exit 1; }</span>
+<span class="cmd">echo "✅ Engine checkpoint"</span>
+<span class="cmd">velero backup create pre-upgrade-$(date +%Y%m%d) --include-namespaces=$NS --snapshot-volumes --wait || { echo "❌ Backup FAILED"; exit 1; }</span>
+<span class="cmd">echo "✅ Velero backup"</span>
+<span class="cmd">UNHEALTHY=$(oc get pods -n $NS --no-headers | grep -v Running | grep -v Completed | wc -l)</span>
+<span class="cmd">[ "$UNHEALTHY" -eq 0 ] || { echo "❌ $UNHEALTHY pods not Running"; exit 1; }</span>
+<span class="cmd">echo "✅ All pods Running"</span>
+<span class="cmd">echo "✅ ALL GATES PASSED — Safe to upgrade"</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">12.1</span>Upgrade Procedure</h3>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">1. Pre-upgrade checkpoint</div><div class="tl-desc">Run <code>checkpoint.sh</code>, DB backup, Velero backup</div></div></div>
+          <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">2. Pause MachineHealthCheck</div><div class="tl-desc"><code>oc annotate mhc ... cluster.x-k8s.io/paused=""</code></div></div></div>
+          <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">3. Upgrade Operator</div><div class="tl-desc"><code>helm upgrade appian-operator ./new-chart.tgz</code></div></div></div>
+          <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">4. Update CR version</div><div class="tl-desc"><code>oc patch appian ... -p '{"spec":{"version":"NEW"}}'</code></div></div></div>
+          <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-content"><div class="tl-title">5. Monitor &amp; validate</div><div class="tl-desc">Watch rolling update, verify health, run <code>sp_updatestats</code></div></div></div>
+          <div class="tl-item"><div class="tl-dot-wrap"><div class="tl-dot"></div></div><div class="tl-content"><div class="tl-title">6. Resume operations</div><div class="tl-desc">Resume MHC, revoke temp DB permissions</div></div></div>
+        </div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">12.2</span>Rollback Decision Matrix</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Scenario</th><th>Safe?</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Operator failed, site not touched</td><td class="td-ok">Yes</td><td><code>helm rollback</code></td></tr>
+            <tr><td class="td-bold">Site started, no transactions</td><td class="td-ok">Yes</td><td>Revert CR version + image tags</td></tr>
+            <tr><td class="td-bold">Site started, transactions processed</td><td style="color:var(--warn)">DB restore needed</td><td>Coordinate with DBA</td></tr>
+            <tr><td class="td-bold">Upgrade done, corruption suspected</td><td style="color:var(--red)">Partial</td><td>Open Appian Support ticket</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-crit"><span class="fi fi-sm" style="color:var(--red)"><svg><use href="#i-stop"/></svg></span><div><span class="callout-lbl">CRITICAL</span>If the engine processed transactions after upgrade, rollback <strong>must</strong> include DB restore. Engine state is version-coupled.</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">12.3</span>RTO/RPO Targets</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Deploy</th><th>RTO</th><th>RPO</th><th>Strategy</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">SA Staging</td><td>2–4 hr</td><td>Last snapshot</td><td>Full rebuild</td></tr>
+            <tr><td class="td-bold">HA Prod</td><td>30–60 min</td><td>Snapshot + txn log</td><td>Velero + SQL AG</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">12.4</span>OCP Cluster Upgrade Coordination</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cc"># 1. Pause MHC</span>
+<span class="cmd">oc annotate mhc appian-worker-mhc -n openshift-machine-api cluster.x-k8s.io/paused=""</span>
+<span class="cc"># 2. Verify PDBs</span>
+<span class="cmd">oc get pdb -n appian-prod</span>
+<span class="cc"># 3. Checkpoint</span>
+<span class="cmd">oc exec -n appian-prod $(oc get pod -n appian-prod -l app.kubernetes.io/component=service-manager -o name | head -1) \</span>
+  <span class="cmd">-- /usr/local/appian/ae/bin/checkpoint.sh</span>
+<span class="cc"># 4. Start OCP upgrade</span>
+<span class="cmd">oc adm upgrade --to=4.15.x</span>
+<span class="cmd">oc get nodes -w</span>
+<span class="cc"># 5. After upgrade — resume MHC</span>
+<span class="cmd">oc annotate mhc appian-worker-mhc -n openshift-machine-api cluster.x-k8s.io/paused-</span></code></pre></div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">12.5</span>StorageClass reclaimPolicy</h3>
+        <div class="code-wrap"><div class="code-topbar"><div class="code-dots"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span></div><div class="code-lang">bash</div><button class="copy-btn" onclick="copyBlock(this)">copy</button></div><div class="code-scroll"><pre><code><span class="cmd">oc get storageclass -o custom-columns=NAME:.metadata.name,RECLAIM:.reclaimPolicy</span>
+<span class="cc"># If any show "Delete" for production:</span>
+<span class="cmd">oc patch storageclass &lt;name&gt; -p '{"reclaimPolicy":"Retain"}'</span></code></pre></div></div>
+      </div>
+    </div>
+
+    <!-- SEC 13 -->
+    <div class="section-card" id="sec13">
+      <div class="sec-card-hdr" onclick="toggleSection('sec13')">
+        <div class="sec-icon-wrap"><span class="fi fi-md"><svg><use href="#i-terminal"/></svg></span></div>
+        <div style="flex:1;min-width:0"><span class="sec-num">SECTION 13</span><span class="sec-card-title">Quick Reference</span></div>
+        <span class="sec-chevron"><svg><use href="#i-chev-d"/></svg></span>
+      </div>
+      <div class="sec-card-body">
+        <h3 class="sub-hdr"><span class="sub-hdr-num">13.1</span>Sizing Reference (Per HA Replica)</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Component</th><th>CPU Req</th><th>Mem Req</th><th>CPU Lim</th><th>Mem Lim</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Webapp</td><td>4</td><td>8 Gi</td><td>8</td><td>16 Gi</td></tr>
+            <tr><td class="td-bold">Data Server</td><td>4</td><td>8 Gi</td><td>8</td><td>16 Gi</td></tr>
+            <tr><td class="td-bold">Search</td><td>4</td><td>8 Gi</td><td>8</td><td>16 Gi</td></tr>
+            <tr><td class="td-bold">Svc Manager</td><td>2</td><td>4 Gi</td><td>4</td><td>16 Gi</td></tr>
+            <tr><td class="td-bold">Kafka</td><td>1</td><td>2 Gi</td><td>4</td><td>12 Gi</td></tr>
+            <tr><td class="td-bold">Zookeeper</td><td>0.5</td><td>1 Gi</td><td>1</td><td>6 Gi</td></tr>
+            <tr style="border-top:2px solid var(--border2)"><td class="td-bold">TOTAL/replica</td><td class="td-accent">~15.5</td><td class="td-accent">~31 Gi</td><td class="td-accent">~33</td><td class="td-accent">~82 Gi</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout callout-note"><span class="fi fi-sm" style="color:var(--accent2)"><svg><use href="#i-info"/></svg></span><div><span class="callout-lbl">HA TOTAL</span>For 3-replica HA: ~46.5 vCPU / ~93 Gi (requests) or ~99 vCPU / ~246 Gi (limits).</div></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">13.2</span>Common Anti-Patterns</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Anti-Pattern</th><th>What Happens</th><th>Correct</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--red)">anyuid to default SA</td><td>Every pod gets elevated perms</td><td class="td-ok">Dedicated <code>appian-sa</code></td></tr>
+            <tr><td style="color:var(--red)">Shared RWX for all</td><td>I/O contention + corruption</td><td class="td-ok">Per-component PVCs</td></tr>
+            <tr><td style="color:var(--red)">NFS for Kafka/ZK</td><td>Election failures, timeouts</td><td class="td-ok">SSD/NVMe StorageClass</td></tr>
+            <tr><td style="color:var(--red)">Skip image verify</td><td>45-min delayed failure</td><td class="td-ok">Verify with <code>podman images</code></td></tr>
+            <tr><td style="color:var(--red)">Upgrade without checkpoint</td><td>No rollback path</td><td class="td-ok"><code>checkpoint.sh</code> + Velero</td></tr>
+            <tr><td style="color:var(--red)">Wrong SA on pods</td><td>SCC grants no effect</td><td class="td-ok">Set in CR <code>serviceAccountName</code></td></tr>
+            <tr><td style="color:var(--red)">Licence URL mismatch</td><td>Site refuses to start</td><td class="td-ok">Match <code>spec.url</code> to licence</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">13.3</span>Support Escalation</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Level</th><th>Who</th><th>When</th></tr></thead>
+          <tbody>
+            <tr><td class="td-accent">L1</td><td>On-call platform eng</td><td>Pod down, site unreachable</td></tr>
+            <tr><td class="td-accent">L2</td><td>Senior architect</td><td>L1 unresolved 30 min</td></tr>
+            <tr><td class="td-accent">L3 DB</td><td>DBA team</td><td>SQL failures, corruption</td></tr>
+            <tr><td class="td-accent">L3 Vendor</td><td>Appian Support</td><td>Engine replay, licence, bugs</td></tr>
+            <tr><td class="td-accent">L3 Infra</td><td>Red Hat Support</td><td>OCP cluster, ODF failures</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">13.4</span>Version Compatibility</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Appian</th><th>Operator</th><th>OCP</th><th>SQL Server</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">26.2.x</td><td>0.199.x</td><td>4.12–4.15</td><td>2019, 2022</td></tr>
+            <tr><td class="td-bold">26.1.x</td><td>0.198.x</td><td>4.12–4.14</td><td>2019, 2022</td></tr>
+            <tr><td class="td-bold">25.4.x</td><td>0.197.x</td><td>4.11–4.14</td><td>2019, 2022</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">13.5</span>Ownership Matrix</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Responsibility</th><th>Owner</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">OCP cluster, nodes</td><td>Platform Team</td></tr>
+            <tr><td class="td-bold">Appian Operator, CR</td><td>Platform Engineering</td></tr>
+            <tr><td class="td-bold">SQL Server, backups</td><td>DBA Team</td></tr>
+            <tr><td class="td-bold">TLS, NetworkPolicy, SCC</td><td>Security / Network</td></tr>
+            <tr><td class="td-bold">Appian apps, users</td><td>Appian Admin</td></tr>
+            <tr><td class="td-bold">Health checks, incidents</td><td>Operations / On-Call</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3 class="sub-hdr"><span class="sub-hdr-num">13.6</span>Port Reference</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Service</th><th>Port</th><th>Protocol</th></tr></thead>
+          <tbody>
+            <tr><td class="td-bold">Appian HTTPS</td><td>443</td><td>TCP/TLS</td></tr>
+            <tr><td class="td-bold">SQL Server</td><td>1433</td><td>TCP</td></tr>
+            <tr><td class="td-bold">Kafka</td><td>9092</td><td>TCP</td></tr>
+            <tr><td class="td-bold">Zookeeper</td><td>2181</td><td>TCP</td></tr>
+            <tr><td class="td-bold">LDAP/LDAPS</td><td>389/636</td><td>TCP</td></tr>
+            <tr><td class="td-bold">SMTP</td><td>25/587</td><td>TCP</td></tr>
+          </tbody>
+        </table></div>
+
+        <div class="qr-grid">
+          <div class="qr-card">
+            <div class="qr-card-title"><span class="fi fi-xs" style="color:var(--accent)"><svg><use href="#i-terminal"/></svg></span> Commands</div>
+            <div class="qr-item"><code>oc get appians -n &lt;ns&gt;</code></div>
+            <div class="qr-item"><code>oc get pods -n &lt;ns&gt;</code></div>
+            <div class="qr-item"><code>oc logs deploy/appian-webapp</code></div>
+            <div class="qr-item"><code>oc describe appian &lt;name&gt;</code></div>
+          </div>
+          <div class="qr-card">
+            <div class="qr-card-title"><span class="fi fi-xs" style="color:var(--accent2)"><svg><use href="#i-layers"/></svg></span> Namespaces</div>
+            <div class="qr-item">Op: <code>appian-operator</code></div>
+            <div class="qr-item">Stg: <code>appian-stg</code></div>
+            <div class="qr-item">Prod: <code>appian-prod</code></div>
+            <div class="qr-item">cert-mgr: <code>cert-manager</code></div>
+          </div>
+          <div class="qr-card">
+            <div class="qr-card-title"><span class="fi fi-xs" style="color:var(--green)"><svg><use href="#i-activity"/></svg></span> Health</div>
+            <div class="qr-item"><code>/suite/health</code></div>
+            <div class="qr-item"><code>/suite/rest/a/health/</code></div>
+            <div class="qr-item"><code>/suite/healthCheck</code></div>
+          </div>
+          <div class="qr-card">
+            <div class="qr-card-title"><span class="fi fi-xs" style="color:var(--warn)"><svg><use href="#i-hdd"/></svg></span> Storage</div>
+            <div class="qr-item">SA: <code>standard-rwo</code></div>
+            <div class="qr-item">HA: <code>ocs-cephfs</code></div>
+            <div class="qr-item">Kafka: <code>ocs-rbd</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /allSections -->
+  </div><!-- /content-area -->
+</div><!-- /view-home -->
+
+<!-- VIEW: CHECKLIST -->
+<div class="view" id="view-checklist">
+  <div class="chk-progress-wrap" style="margin-top:var(--hdr-h);padding:12px 14px;background:var(--surface);border-bottom:1px solid var(--border2)">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;display:flex;justify-content:space-between">
+      Checklist Progress <span id="chkPct" style="color:var(--accent)">0%</span>
+    </div>
+    <div style="height:4px;background:var(--bg3);border-radius:99px;overflow:hidden">
+      <div id="chkProgFill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .4s;width:0"></div>
+    </div>
+  </div>
+  <div id="chkList" style="padding:12px"></div>
+</div>
+
+<!-- VIEW: SECTIONS -->
+<div class="view" id="view-sections">
+  <div class="sections-list" style="padding:10px;margin-top:var(--hdr-h)">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--text3);padding:4px 0 10px">Jump to Section</div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-tab active" id="tab-home" onclick="switchTab('home')">
+    <span class="fi fi-md"><svg><use href="#i-doc"/></svg></span>
+    <span class="nav-tab-label">GUIDE</span>
+  </button>
+  <button class="nav-tab" id="tab-checklist" onclick="switchTab('checklist')">
+    <span class="fi fi-md"><svg><use href="#i-check"/></svg></span>
+    <span class="nav-tab-label">CHECKS</span>
+  </button>
+  <button class="nav-tab" id="tab-sections" onclick="switchTab('sections')">
+    <span class="fi fi-md"><svg><use href="#i-grid"/></svg></span>
+    <span class="nav-tab-label">SECTIONS</span>
+  </button>
+  <button class="nav-tab" id="tab-search" onclick="openSearch()">
+    <span class="fi fi-md"><svg><use href="#i-search"/></svg></span>
+    <span class="nav-tab-label">SEARCH</span>
+  </button>
+</nav>
+
+<script>
+/* ══════ CORE JS — HOME GRID + DETAIL VIEW ══════ */
+const html = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+const backBtn = document.getElementById('backBtn');
+const homeGrid = document.getElementById('homeGrid');
+const detailView = document.getElementById('detailView');
+const detailContent = document.getElementById('detailContent');
+const heroCard = document.querySelector('.hero');
+let isDark = true;
+try { isDark = localStorage.getItem('theme') !== 'light'; } catch(e) {}
+applyTheme();
+themeBtn.addEventListener('click', () => { isDark = !isDark; try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(e) {} applyTheme(); });
+function applyTheme() {
+  html.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeBtn.innerHTML = isDark ? '<svg><use href="#i-sun"/></svg>' : '<svg><use href="#i-moon"/></svg>';
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#08090d' : '#f0f2f7');
+}
+
+let currentTab = 'home';
+let currentSection = null;
+
+function switchTab(tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('view-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+  currentTab = tab;
+  if (tab === 'home') { closeSection(); }
+  if (tab === 'checklist') renderChecklist();
+  if (tab === 'sections') renderSections();
+  window.scrollTo(0, 0);
+}
+
+/* ── Section Navigation ── */
+function openSection(id) {
+  const sec = document.getElementById(id);
+  if (!sec) return;
+  // Clone section content into detail view
+  detailContent.innerHTML = '';
+  const clone = sec.cloneNode(true);
+  clone.style.display = '';
+  clone.classList.remove('collapsed');
+  // Remove onclick from header in detail mode
+  const hdr = clone.querySelector('.sec-card-hdr');
+  if (hdr) hdr.removeAttribute('onclick');
+  detailContent.appendChild(clone);
+  // Re-bind copy buttons in cloned content
+  clone.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => copyBlock(btn));
+  });
+  // Show detail, hide grid + hero
+  homeGrid.style.display = 'none';
+  heroCard.style.display = 'none';
+  detailView.classList.add('active');
+  backBtn.classList.add('visible');
+  currentSection = id;
+  window.scrollTo(0, 0);
+}
+
+function closeSection() {
+  detailView.classList.remove('active');
+  detailContent.innerHTML = '';
+  homeGrid.style.display = '';
+  heroCard.style.display = '';
+  backBtn.classList.remove('visible');
+  currentSection = null;
+}
+
+backBtn.addEventListener('click', () => {
+  if (currentSection) { closeSection(); window.scrollTo(0, 0); }
+});
+
+/* ── Unused but kept for compat ── */
+function toggleSection(id) {}
+
+/* TOC */
+const tocBackdrop = document.getElementById('tocBackdrop');
+document.getElementById('tocBtn').addEventListener('click', () => tocBackdrop.classList.add('open'));
+document.getElementById('tocClose').addEventListener('click', () => tocBackdrop.classList.remove('open'));
+tocBackdrop.addEventListener('click', e => { if (e.target === tocBackdrop) tocBackdrop.classList.remove('open'); });
+document.querySelectorAll('.toc-item').forEach(item => {
+  item.addEventListener('click', () => {
+    tocBackdrop.classList.remove('open');
+    if (currentTab !== 'home') switchTab('home');
+    setTimeout(() => openSection(item.dataset.target), 200);
+  });
+});
+
+/* Progress */
+const progressFill = document.getElementById('progressFill');
+const tocProgFill = document.getElementById('tocProgFill');
+const tocPct = document.getElementById('tocPct');
+const sectionBadge = document.getElementById('sectionBadge');
+let badgeTimer;
+
+window.addEventListener('scroll', onScroll, { passive: true });
+function onScroll() {
+  const scrollTop = window.scrollY;
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docH > 0 ? Math.round((scrollTop / docH) * 100) : 0;
+  progressFill.style.width = pct + '%';
+  tocProgFill.style.width = pct + '%';
+  tocPct.textContent = pct + '%';
+}
+
+/* Copy */
+function copyBlock(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  navigator.clipboard.writeText(pre?.textContent || '').then(() => {
+    btn.textContent = '✓'; btn.classList.add('ok');
+    showToast('Copied!');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('ok'); }, 2000);
+  }).catch(() => showToast('Copy failed'));
+}
+
+function showToast(msg, dur = 2000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+/* Search */
+const searchOverlay = document.getElementById('searchOverlay');
+const searchInput = document.getElementById('searchInput');
+const searchResultsList = document.getElementById('searchResultsList');
+let searchItems = [];
+function buildSearchIndex() {
+  document.querySelectorAll('#allSections .section-card').forEach(sec => {
+    const id = sec.id;
+    const title = sec.querySelector('.sec-card-title')?.textContent || '';
+    sec.querySelectorAll('.sub-hdr,.body-p,.step-title,.callout,td').forEach(el => {
+      const txt = el.textContent?.trim();
+      if (txt && txt.length > 4) searchItems.push({ text: txt, section: title, id });
+    });
+  });
+}
+buildSearchIndex();
+function openSearch() { searchOverlay.classList.add('open'); setTimeout(() => searchInput.focus(), 100); }
+function closeSearch() { searchOverlay.classList.remove('open'); searchInput.value = ''; searchResultsList.innerHTML = '<div class="sr-empty">Start typing…</div>'; }
+document.getElementById('searchBtn').addEventListener('click', openSearch);
+searchOverlay.addEventListener('click', e => { if (e.target === searchOverlay) closeSearch(); });
+let searchTimer;
+searchInput.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(doSearch, 180); });
+function doSearch() {
+  const q = searchInput.value.toLowerCase().trim();
+  if (q.length < 2) { searchResultsList.innerHTML = '<div class="sr-empty">Start typing…</div>'; return; }
+  const matches = searchItems.filter(i => i.text.toLowerCase().includes(q)).slice(0, 10);
+  if (!matches.length) { searchResultsList.innerHTML = '<div class="sr-empty">No results</div>'; return; }
+  searchResultsList.innerHTML = matches.map(m => {
+    const hl = m.text.substring(0, 90).replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<strong style="color:var(--accent)">$1</strong>');
+    return `<div class="sr-item" data-target="${m.id}"><div class="sr-section">${m.section}</div><div class="sr-text">${hl}</div></div>`;
+  }).join('');
+  searchResultsList.querySelectorAll('.sr-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (currentTab !== 'home') switchTab('home');
+      closeSearch();
+      setTimeout(() => openSection(item.dataset.target), 200);
+    });
+  });
+}
+
+/* Checklist */
+const chkKey = 'appian-m3-chk';
+function getChkState() { try { return JSON.parse(localStorage.getItem(chkKey) || '{}'); } catch(e) { return {}; } }
+function saveChkState(state) { try { localStorage.setItem(chkKey, JSON.stringify(state)); } catch(e) {} }
+function renderChecklist() {
+  const container = document.getElementById('chkList');
+  const state = getChkState();
+  const checklists = document.querySelectorAll('#allSections .checklist');
+  let h = '', total = 0, checked = 0;
+  checklists.forEach((cl, clIdx) => {
+    const cat = cl.dataset.category || 'General';
+    h += `<div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--text3);padding:16px 0 6px">${cat}</div>`;
+    cl.querySelectorAll('li').forEach((li, liIdx) => {
+      const key = `cl${clIdx}-li${liIdx}`;
+      const isChecked = !!state[key]; total++; if (isChecked) checked++;
+      const txt = li.textContent.trim().replace(/^[☐✔]/, '').trim();
+      h += `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleChk('${key}', this)">
+        <span class="chk-icon ${isChecked ? 'checked' : ''}" data-chk="${key}">${isChecked ? '✔' : '☐'}</span>
+        <span style="font-size:13px;line-height:1.55;flex:1">${txt}</span></div>`;
+    });
+  });
+  container.innerHTML = h;
+  updateChkProgress(checked, total);
+}
+function toggleChk(key, row) {
+  const state = getChkState(); state[key] = !state[key]; saveChkState(state);
+  const icon = row.querySelector('.chk-icon');
+  icon.classList.toggle('checked', !!state[key]); icon.textContent = state[key] ? '✔' : '☐';
+  const allChks = document.querySelectorAll('#chkList .chk-icon');
+  updateChkProgress([...allChks].filter(i => i.classList.contains('checked')).length, allChks.length);
+}
+function updateChkProgress(checked, total) {
+  const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+  document.getElementById('chkPct').textContent = pct + '%';
+  document.getElementById('chkProgFill').style.width = pct + '%';
+}
+
+/* Sections jump list */
+const sectionData = [
+  { id:'sec00',n:'00',title:'Executive Summary' },{ id:'sec01',n:'01',title:'Core Concepts' },
+  { id:'sec02',n:'02',title:'Prerequisites' },{ id:'sec03',n:'03',title:'Air-Gap / Registry' },
+  { id:'sec04',n:'04',title:'Operator Install' },{ id:'sec05',n:'05',title:'Staging (SA)' },
+  { id:'sec06',n:'06',title:'Production (HA)' },{ id:'sec07',n:'07',title:'Network / Ingress' },
+  { id:'sec08',n:'08',title:'Database Config' },{ id:'sec09',n:'09',title:'Troubleshooting' },
+  { id:'sec10',n:'10',title:'Health Checks' },{ id:'sec11',n:'11',title:'Disaster Recovery' },
+  { id:'sec12',n:'12',title:'Upgrades' },{ id:'sec13',n:'13',title:'Quick Reference' },
+];
+function renderSections() {
+  const container = document.querySelector('#view-sections .sections-list');
+  if (container.querySelectorAll('.sec-jump-item').length) return;
+  sectionData.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'sec-jump-item';
+    div.innerHTML = `<span class="sec-jump-num">${s.n}</span><span class="sec-jump-title">${s.title}</span><span class="sec-jump-arrow"><svg width="14" height="14"><use href="#i-chev-r"/></svg></span>`;
+    div.addEventListener('click', () => {
+      switchTab('home');
+      setTimeout(() => openSection(s.id), 200);
+    });
+    container.appendChild(div);
+  });
+}
+
+/* Diagnostics */
+const diagFab = document.getElementById('diagFab');
+const diagPanel = document.getElementById('diagPanel');
+diagFab.addEventListener('click', () => diagPanel.classList.toggle('open'));
+function closeDiag() { diagPanel.classList.remove('open'); }
+document.addEventListener('click', e => { if (!e.target.closest('#diagFab') && !e.target.closest('#diagPanel')) diagPanel.classList.remove('open'); });
+
+/* Keyboard */
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  if (e.key === 'Escape') { closeSearch(); if (currentSection) closeSection(); }
+});
+
+/* Hardware back button support */
+window.addEventListener('popstate', () => { if (currentSection) closeSection(); });
+</script>
+</body>
+</html>
